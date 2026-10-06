@@ -204,6 +204,47 @@ class FrankensteinEngine:
             raise ValueError("invalid goal status")
         return self._append_canonical(EventKind.GOAL_UPDATED, Authority.SUBJECT, {"goal_id": goal_id, "status": status}, cause_ids=cause_ids)
 
+    def active_plan(self) -> PlanState | None:
+        return self.plans.current()
+
+    def create_plan(
+        self,
+        objective: str,
+        routes: tuple[tuple[str, ...], ...],
+        *,
+        priority: float = 0.5,
+        cause_ids: tuple[str, ...] = (),
+    ) -> str:
+        objective = objective.strip()
+        if not objective:
+            raise ValueError("plan objective cannot be empty")
+        normalized_routes = validate_routes(routes)
+        existing = self.active_plan()
+        if existing is not None and existing.status == "active":
+            raise ValueError("an active plan already exists")
+
+        goal_id = self.create_goal(
+            objective,
+            priority=priority,
+            cause_ids=cause_ids,
+        )
+        plan_id = new_id()
+        self._append_canonical(
+            EventKind.PLAN_CREATED,
+            Authority.SUBJECT,
+            {
+                "plan_id": plan_id,
+                "goal_id": goal_id,
+                "objective": objective,
+                "routes": [list(route) for route in normalized_routes],
+                "route_index": 0,
+                "step_index": 0,
+                "status": "active",
+            },
+            cause_ids=cause_ids,
+        )
+        return plan_id
+
     def set_concern(self, description: str, *, intensity: float = 0.5, concern_id: str | None = None, status: str = "active", cause_ids: tuple[str, ...] = ()) -> str:
         cid = concern_id or new_id()
         self._append_canonical(EventKind.CONCERN_UPDATE, Authority.SUBJECT, {"concern_id": cid, "description": description, "intensity": intensity, "status": status}, cause_ids=cause_ids)
