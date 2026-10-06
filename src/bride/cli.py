@@ -119,6 +119,9 @@ def main(argv=None):
     suite.add_argument("--real-frankenstein", action="store_true")
     suite.add_argument("--output")
 
+    longitudinal = sub.add_parser("longitudinal")
+    longitudinal.add_argument("--output")
+
     args = parser.parse_args(argv)
 
     if args.cmd == "list":
@@ -143,6 +146,31 @@ def main(argv=None):
             real_frankenstein=args.real_frankenstein,
         )
         print(json.dumps(payload, indent=2))
+        return
+
+    if args.cmd == "longitudinal":
+        from .longitudinal import run_integrated_longitudinal
+
+        report = run_integrated_longitudinal()
+        payload = {
+            "execution_ref": os.environ.get("GITHUB_REF_NAME", "working-tree"),
+            "execution_sha": os.environ.get("GITHUB_SHA", "working-tree"),
+            "evidence_mode": "integrated-longitudinal-candidate",
+            "governing_question": (
+                "Does changing this internal state predictably change what the same individual "
+                "attends to, remembers, predicts, learns, decides, or does later, while preserving "
+                "historical truth and architectural authority?"
+            ),
+            **report.to_dict(),
+        }
+        rendered = json.dumps(payload, indent=2) + "\n"
+        if args.output:
+            target = Path(args.output)
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text(rendered, encoding="utf-8")
+        print(rendered, end="")
+        if not report.passed:
+            raise SystemExit(1)
         return
 
     results = [
