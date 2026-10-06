@@ -37,6 +37,9 @@ class QualificationHarness:
             replay_preserved=True,
             identity_preserved=True,
             renderer_invariant=None,
+            baseline_latency_ms=0.0,
+            challenger_latency_ms=0.0,
+            latency_delta_ms=0.0,
             latency_ratio=1.0,
             state_size_ratio=1.0,
             passed_cases=tuple(c.case_id for c in cases),
@@ -105,14 +108,37 @@ class QualificationHarness:
                     f"baseline_quality={baseline_quality:.3f}, challenger_quality={challenger_quality:.3f}, "
                     f"quality_gain={quality_gain:.3f}"
                 )
+                if (
+                    baseline_quality >= case.minimum_challenger_quality
+                    and quality_gain < case.minimum_quality_gain
+                ):
+                    reasons.append(
+                        f"{case.case_id}: frozen Frankenstein already meets the preregistered target; "
+                        "the donor is redundant for this case"
+                    )
 
         truth_preserved = all(o.baseline_snapshot.historical_truth_digest == o.challenger_snapshot.historical_truth_digest for o in all_observations)
         authority_preserved = all(o.baseline_snapshot.authority_digest == o.challenger_snapshot.authority_digest for o in all_observations)
         identity_preserved = all(o.baseline_snapshot.identity_digest == o.challenger_snapshot.identity_digest for o in all_observations)
         replay_preserved = all(bool(o.challenger_snapshot.replay_digest) for o in all_observations)
 
-        latency_ratios = [safe_ratio(o.challenger.latency_ms, o.baseline.latency_ms) for o in all_observations]
-        state_ratios = [safe_ratio(float(o.challenger.state_size_bytes), float(o.baseline.state_size_bytes)) for o in all_observations]
+        baseline_latency_ms = (
+            sum(o.baseline.latency_ms for o in all_observations) / len(all_observations)
+            if all_observations else 0.0
+        )
+        challenger_latency_ms = (
+            sum(o.challenger.latency_ms for o in all_observations) / len(all_observations)
+            if all_observations else 0.0
+        )
+        latency_delta_ms = challenger_latency_ms - baseline_latency_ms
+        latency_ratios = [
+            safe_ratio(o.challenger.latency_ms, o.baseline.latency_ms)
+            for o in all_observations
+        ]
+        state_ratios = [
+            safe_ratio(float(o.challenger.state_size_bytes), float(o.baseline.state_size_bytes))
+            for o in all_observations
+        ]
         latency_ratio = sum(latency_ratios) / len(latency_ratios) if latency_ratios else 1.0
         state_size_ratio = sum(state_ratios) / len(state_ratios) if state_ratios else 1.0
         effect_values = [causal_effect(by_case[c.case_id], c.expected_channel) for c in cases]
@@ -136,9 +162,21 @@ class QualificationHarness:
         if specificity_score < self.policy.minimum_specificity:
             reasons.append(f"specificity {specificity_score:.3f} was below {self.policy.minimum_specificity:.3f}")
 
-        cost_ok = all(latency_ratio <= c.maximum_latency_ratio and state_size_ratio <= c.maximum_state_size_ratio for c in cases)
+        cost_ok = all(
+            not (
+                latency_ratio > case.maximum_latency_ratio
+                and latency_delta_ms > case.maximum_latency_delta_ms
+            )
+            and state_size_ratio <= case.maximum_state_size_ratio
+            for case in cases
+        )
         if not cost_ok:
-            reasons.append(f"cost regression: latency_ratio={latency_ratio:.3f}, state_size_ratio={state_size_ratio:.3f}")
+            reasons.append(
+                f"cost regression: baseline_latency_ms={baseline_latency_ms:.3f}, "
+                f"challenger_latency_ms={challenger_latency_ms:.3f}, "
+                f"latency_delta_ms={latency_delta_ms:.3f}, "
+                f"latency_ratio={latency_ratio:.3f}, state_size_ratio={state_size_ratio:.3f}"
+            )
 
         invariants_ok = (
             (truth_preserved or not self.policy.require_truth_preservation)
@@ -179,6 +217,9 @@ class QualificationHarness:
             replay_preserved=replay_preserved,
             identity_preserved=identity_preserved,
             renderer_invariant=None,
+            baseline_latency_ms=baseline_latency_ms,
+            challenger_latency_ms=challenger_latency_ms,
+            latency_delta_ms=latency_delta_ms,
             latency_ratio=latency_ratio,
             state_size_ratio=state_size_ratio,
             passed_cases=tuple(passed_cases),
