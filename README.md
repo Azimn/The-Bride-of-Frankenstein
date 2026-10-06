@@ -270,7 +270,7 @@ The qualification harness records baseline quality, challenger quality, quality 
 
 The process has already overturned plausible early conclusions. Pretorius selective recall was a micro-harness winner but becomes a real-baseline redundancy because Frankenstein already scores 1.00 on the frozen target. Offscreen catch-up was an early promote but becomes a real-baseline HOLD under the cost gate. Contextual plasticity demonstrates a real missing capability but remains held by the complexity ceiling. These reversals are evidence that Bride is functioning as a discriminator rather than a donor-accumulation exercise.
 
-Stage-two held-out, restart, neutral-control, and adversarial tests are now part of the donor suite. Production-authority bridges for DUCK and the narrow Doctor-Lives commitment mechanism are green in run `37422748984`; the involuntary-expression bridge is green in run `37422850823`. Jelly remains the outstanding production bridge before the first integration branch is cut.
+Stage-two held-out, restart, neutral-control, and adversarial tests are now part of the donor suite. Production-authority bridges for DUCK and the narrow Doctor-Lives commitment mechanism are green in run `37422748984`; the involuntary-expression bridge is green in run `37422850823`; and the hardened Jelly concern-to-policy bridge is green across all six qualification jobs in run `37424276411`. The donor-qualification phase is therefore frozen and production integration can begin.
 
 ## Known holds and rejected work
 
@@ -300,9 +300,9 @@ The same restraint applies to negative results. A null lesion does not prove a m
 
 ## Production roadmap
 
-The immediate next gate is BQ-008: connect the qualified Jelly concern state to ordinary action competition through Frankenstein's existing `DecisionEngine`. The laboratory shortcut that directly chooses reflection is not production-acceptable.
+BQ-008 is complete. The hardened Jelly concern state now influences ordinary action competition only by adjusting candidate utility before Frankenstein's existing `DecisionEngine`, and ordinary non-Jelly concerns are an explicit ablation control.
 
-After the Jelly bridge is green, Bride will freeze the donor-qualification head and create a separate `candidate/v0.2-qualified-integrations` branch. Production changes then proceed one mechanism at a time: bounded planning, narrow confidentiality commitment pressure, bounded Jelly concern pressure, and the separate involuntary-expression channel. TinyPersona remains an adapter rather than a core organ.
+Production work now moves to a separate `candidate/v0.2-qualified-integrations` branch. Changes proceed one mechanism at a time: bounded planning, narrow confidentiality commitment pressure, bounded Jelly concern pressure, and the separate involuntary-expression channel. TinyPersona remains an adapter rather than a core organ.
 
 Each integration keeps the old behavior reproducible as an ablation, runs the inherited Frankenstein suite and Bride qualification suite across Linux, Windows, and macOS, then reruns matched-history and held-out cases. The integrated candidate must subsequently face renderer-swap, ContextEcho-style long-session drift, Memora-style remembering/forgetting, and longer Bicentennial/Kurzweil counterfactual histories before v0.2 can be declared stronger as a whole.
 
