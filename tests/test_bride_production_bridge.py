@@ -187,3 +187,19 @@ def test_jelly_concern_pressure_survives_restart_without_raw_thought_authority(t
     assert concerns == [
         "Private concern, not established fact: I may need to revisit this."
     ]
+
+
+def test_jelly_bridge_does_not_change_ordinary_concern_policy(tmp_path):
+    subject = engine(tmp_path)
+    subject.set_concern(
+        "Repair the damaged trust.",
+        intensity=0.65,
+    )
+
+    receipt = decide_with_concerns(
+        subject,
+        concern_candidates(),
+        context="quiet room",
+    )
+
+    assert receipt.selected == "engage"
