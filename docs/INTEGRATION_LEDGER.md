@@ -57,3 +57,34 @@ The repair did not weaken the confidentiality benchmark. It narrowed activation 
 Verdict: **ACCEPT AS v0.2 CANDIDATE DEFAULT**
 
 Next slice: bounded Jelly private-cognition concern pressure.
+
+
+## Integration Slice 3: bounded private-cognition concern pressure
+
+Status: **GREEN**
+
+Integration head: `3ed63d5ee6d19153ff407267b1e6821d9fc7a1bb`
+
+Regression workflow: `37426401544`
+
+Bride qualification workflow: `37426401471`
+
+Evidence:
+- 9/9 regression jobs passed across Linux, Windows, and macOS on Python 3.11, 3.12, and 3.13.
+- 6/6 Bride qualification jobs passed across Linux, Windows, and macOS on Python 3.11 and 3.13.
+- Raw private thought alone has no policy effect.
+- Admitted private concern remains explicitly uncertain and bounded to intensity 0.65.
+- Machine telemetry and identifier leakage are rejected before storage.
+- Fabricated private claims do not become memory, belief, or world truth.
+- Duplicate private thoughts do not stack duplicate concerns.
+- Only concerns admitted through the private-cognition pathway receive Jelly-specific reflection pressure.
+- Ordinary Frankenstein concerns remain behaviorally unchanged under the Jelly ablation.
+- `include_private_concerns=False` preserves the prior decision path.
+- Concern pressure adjusts ordinary `ActionCandidate` utility and the existing `DecisionEngine` remains the sole deliberate selector.
+- Stronger homeostatic pressure can defeat reflection.
+- The private-concern effect survives restart.
+- Chat now routes through the same unified v0.2 decision gateway rather than bypassing the qualified pressures.
+
+Verdict: **ACCEPT AS v0.2 CANDIDATE DEFAULT**
+
+Next slice: involuntary-expression boundary.
