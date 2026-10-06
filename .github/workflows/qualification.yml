@@ -24,6 +24,9 @@ jobs:
       - run: pytest -q
       - run: python -m frankenstein eval
       - run: bride-qualify list
-      - run: bride-qualify run doctor_lives_state_policy_bridge --real-frankenstein
-      - run: bride-qualify run tiny_persona_perception --real-frankenstein
-      - run: bride-qualify run jelly_private_cognition_feedback --real-frankenstein
+      - run: bride-qualify suite --real-frankenstein --output evidence/qualification-results.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bride-qualification-${{ runner.os }}-py${{ matrix.python-version }}
+          path: evidence/qualification-results.json
+          if-no-files-found: error
