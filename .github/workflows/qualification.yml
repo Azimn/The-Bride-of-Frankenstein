@@ -31,10 +31,12 @@ jobs:
       - run: bride-qualify list
       - run: bride-qualify suite --real-frankenstein --output evidence/qualification-results.json
       - run: bride-qualify longitudinal --output evidence/longitudinal-results.json
+      - run: bride-qualify stress --turns 32 --output evidence/stress-results.json
       - uses: actions/upload-artifact@v4
         with:
           name: bride-qualification-${{ runner.os }}-py${{ matrix.python-version }}
           path: |
             evidence/qualification-results.json
             evidence/longitudinal-results.json
+            evidence/stress-results.json
           if-no-files-found: error
