@@ -47,3 +47,12 @@ def test_actor_recall_can_prioritize_negative_social_evidence_under_low_trust():
     )
     top = ActorIndexedRecall().rerank(items, actor_id="jay", trust=-0.8, top_k=1)
     assert top[0].memory_id == "b"
+
+
+def test_actor_recall_prefers_lived_memory_over_more_salient_interpretation():
+    items = (
+        RecallItem("lived", "Jay broke a confidence.", "jay", 0.45, -0.8, "episodic"),
+        RecallItem("derived", "Confidence concerns are harmless.", None, 0.80, 0.2, "interpretation"),
+    )
+    top = ActorIndexedRecall().rerank(items, actor_id="jay", trust=-0.7, top_k=1)
+    assert top[0].memory_id == "lived"
