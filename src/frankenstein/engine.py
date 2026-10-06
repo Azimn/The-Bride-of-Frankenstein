@@ -314,9 +314,42 @@ class FrankensteinEngine:
         self._append_canonical(EventKind.CONCERN_UPDATE, Authority.SUBJECT, {"concern_id": cid, "description": description, "intensity": intensity, "status": status}, cause_ids=cause_ids)
         return cid
 
-    def decide(self, candidates: list[ActionCandidate], *, actor_id: str | None = None, context: str = "") -> DecisionReceipt:
-        receipt = self.decision_engine.decide(candidates, actor_id=actor_id, context=context)
-        self._append_canonical(EventKind.DECISION_RECEIPT, Authority.SYSTEM, {"selected": receipt.selected, "scores": receipt.scores, "reasons": {k: list(v) for k, v in receipt.reasons.items()}}, actor_id=actor_id)
+    def decide(
+        self,
+        candidates: list[ActionCandidate],
+        *,
+        actor_id: str | None = None,
+        context: str = "",
+        include_plan: bool = True,
+        plan_base_utility: float = 0.30,
+    ) -> DecisionReceipt:
+        competing = list(candidates)
+        if include_plan:
+            plan_candidate = plan_action_candidate(
+                self.active_plan(),
+                base_utility=plan_base_utility,
+            )
+            if plan_candidate is not None and all(
+                candidate.name != plan_candidate.name
+                for candidate in competing
+            ):
+                competing.append(plan_candidate)
+
+        receipt = self.decision_engine.decide(
+            competing,
+            actor_id=actor_id,
+            context=context,
+        )
+        self._append_canonical(
+            EventKind.DECISION_RECEIPT,
+            Authority.SYSTEM,
+            {
+                "selected": receipt.selected,
+                "scores": receipt.scores,
+                "reasons": {k: list(v) for k, v in receipt.reasons.items()},
+            },
+            actor_id=actor_id,
+        )
         return receipt
 
     def record_outcome(self, action_name: str, *, reward: float, summary: str, cause_ids: tuple[str, ...] = ()) -> EventRecord:
