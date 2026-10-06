@@ -9,6 +9,7 @@ from .capabilities import CapabilityGate
 from .cartridge import CharacterOrigin
 from .decision import ActionCandidate, DecisionEngine, DecisionReceipt
 from .firewall import assert_subjective_safe, qualitative_affect, qualitative_need, qualitative_relationship
+from .expression import InvoluntaryExpression, InvoluntaryExpressionGate
 from .lifecycle import LifecycleManager
 from .lock import FileLock
 from .semantic import InterpretationPolicy, SemanticInterpreter
@@ -53,6 +54,7 @@ class FrankensteinEngine:
             self.projections.ensure_current()
         self.memory = MemoryIndex(self.store)
         self.decision_engine = DecisionEngine(self.store, origin.action_priors)
+        self.expression_gate = InvoluntaryExpressionGate()
         self.plans = PlanProjection(self.store)
         self.renderer = renderer or DeterministicRenderer()
         self.capabilities = capabilities or CapabilityGate()
@@ -504,6 +506,19 @@ class FrankensteinEngine:
         render_event = self._append(EventKind.RENDERER_OUTPUT, Authority.RENDERER, {"text": rendered.text, "renderer_id": rendered.renderer_id, "raw": rendered.raw}, actor_id=actor_id, cause_ids=(obs.event_id,), canonicality=Canonicality.NONCANONICAL)
         self._append_canonical(EventKind.SUBJECT_ACTION, Authority.SUBJECT, {"action_name": receipt.selected, "speech": rendered.text, "renderer_event_id": render_event.event_id}, actor_id=actor_id, cause_ids=(obs.event_id, render_event.event_id))
         return rendered.text
+
+    def involuntary_expression(
+        self,
+        *,
+        pain: float = 0.0,
+        surprise: float = 0.0,
+    ) -> InvoluntaryExpression | None:
+        """Evaluate a transient reflex without changing deliberate policy or canonical state."""
+
+        return self.expression_gate.evaluate(
+            pain=pain,
+            surprise=surprise,
+        )
 
     def execute_action(self, candidate: ActionCandidate, payload: dict[str, Any]) -> Any:
         decision = self.capabilities.authorize(candidate.required_capability)
