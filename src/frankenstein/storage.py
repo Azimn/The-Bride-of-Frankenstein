@@ -355,6 +355,56 @@ class SQLiteStore:
             snapshot["memories"] = [{k: row[k] for k in row.keys()} for row in rows]
         return hashlib.sha256(stable_json(snapshot).encode("utf-8")).hexdigest()
 
+    def semantic_projection_digest(self) -> str:
+        """Digest semantic projection state independent of SQLite insertion order.
+
+        This is the portable replay/backup digest for v0.2 and later. The legacy
+        projection_digest() remains unchanged so existing v0.1 diagnostics and
+        recorded manifests keep their original meaning.
+        """
+        tables = [
+            "needs",
+            "affect",
+            "relationships",
+            "beliefs",
+            "commitments",
+            "expectations",
+            "goals",
+            "concerns",
+            "habits",
+            "memory_edges",
+            "runtime_state",
+        ]
+        snapshot: dict[str, Any] = {}
+        with self.connect() as conn:
+            for table in tables:
+                rows = conn.execute(f"SELECT * FROM {table}").fetchall()
+                normalized = [
+                    {k: row[k] for k in row.keys()}
+                    for row in rows
+                ]
+                normalized.sort(
+                    key=lambda item: stable_json(item)
+                )
+                snapshot[table] = normalized
+
+            rows = conn.execute(
+                "SELECT memory_id,kind,actor_id,text,tags_json,salience,valence,"
+                "arousal,created_at,source_event_id FROM memories"
+            ).fetchall()
+            memories = [
+                {k: row[k] for k in row.keys()}
+                for row in rows
+            ]
+            memories.sort(
+                key=lambda item: stable_json(item)
+            )
+            snapshot["memories"] = memories
+
+        return hashlib.sha256(
+            stable_json(snapshot).encode("utf-8")
+        ).hexdigest()
+
     def backup_to(self, target: str | Path) -> Path:
         target = Path(target)
         target.parent.mkdir(parents=True, exist_ok=True)
