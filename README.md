@@ -1,23 +1,34 @@
 # The Bride of Frankenstein
 
-## Controlled Frankenstein v0.2 Donor Qualification Laboratory
+## Frankenstein v0.2 Release Candidate and Qualification Record
 
-The Bride of Frankenstein is the controlled integration and qualification program for the next version of the Frankenstein persistent-character runtime. It begins from the accepted Frankenstein v0.1 production baseline and asks a deliberately adversarial question: which mechanisms from the preceding research program actually make a continuing character behave better over time, and which mechanisms merely make the architecture larger?
+The Bride of Frankenstein is the controlled research, integration, and release-qualification program for Frankenstein v0.2. It began from the accepted Frankenstein v0.1 production baseline and forced mechanisms from the preceding research program to compete against that baseline under frozen tests. The production candidate now contains only mechanisms that demonstrated a measurable downstream effect and survived authority, replay, ablation, cross-platform, longitudinal, stress, and compatibility gates.
 
-Bride is not a consciousness project and does not claim phenomenal experience. The target is a persistent artificial character whose present behavior is causally shaped by lived history, bounded first-person access, motivation, memory, relationships, commitments, expectations, goals, consequences, learning, private cognition, development, and embodiment while remaining independent of any one language model.
+Bride is not a consciousness project and does not claim phenomenal experience. The engineering target is a persistent artificial character whose present behavior is causally shaped by lived history, bounded first-person access, motivation, memory, relationships, commitments, expectations, goals, consequences, learning, private cognition, development, and embodiment while remaining independent of any one language renderer.
 
-This README is the single architecture authority, research history, design specification, production plan, promotion contract, and current status record. Supporting files in `docs/` preserve evidence and generated ledgers. When a supporting document conflicts with this README, this README wins unless a reviewed change updates both deliberately.
+This README is the single architecture authority, research history, design specification, production plan, promotion contract, and current status record. Supporting files in `docs/` and `evidence/` preserve detailed evidence and append-only ledgers. When a supporting document conflicts with this README, this README wins unless a reviewed change updates both deliberately.
+## Current baseline and release-candidate status
 
-## Current baseline and current lab status
+The frozen comparison champion remains Frankenstein v0.1 at commit `fdaf5be89ccf6991a20eb54649d5318a9adcb6ff`. Its state format remains the compatibility baseline and its behavior remains reproducible through explicit ablation switches.
 
-The frozen champion is Frankenstein v0.1 at commit `fdaf5be89ccf6991a20eb54649d5318a9adcb6ff`. Bride's laboratory branch contains an exact copied baseline plus challenger and evidence code. The inherited `src/frankenstein/` package remains frozen during donor qualification.
+Real-baseline donor qualification is complete. Evidence head `868dd0be6f1b332e826f0da399073d59baae6763` and GitHub Actions run `37422349002` produced agreeing verdicts across Linux, Windows, and macOS on Python 3.11 and 3.13. The frozen record is `evidence/REAL_BASELINE_SNAPSHOT_868dd0b.md`.
 
-The first real-baseline qualification is complete. At evidence head `868dd0be6f1b332e826f0da399073d59baae6763`, GitHub Actions run `37422349002` executed the same real-Frankenstein suite on Linux, Windows, and macOS under Python 3.11 and 3.13. All six artifacts agree on every verdict. Their IDs and SHA-256 digests are frozen in `evidence/REAL_BASELINE_SNAPSHOT_868dd0b.md`.
+Four behavioral additions survived qualification and production integration:
 
-Four behavioral candidates advance from donor qualification to production-bridge work: DUCK bounded planning, bounded Jelly-Psiduck private-cognition feedback, a narrow The-Doctor-Lives confidentiality commitment-to-policy bridge, and the FirstPersonLoop involuntary-expression boundary. TinyPersona perception qualifies only as a host adapter. Pretorius selective recall and Digital Subject continuity influence are rejected as redundant in their frozen cases because Frankenstein already meets the preregistered target. Contextual plasticity, offscreen continuity, and Omnicore affect remain held for complexity, cost, or production-need reasons. Model-dependent steering and selective dual-process work remain blocked pending compatible reproduction.
+- bounded replayable planning derived from DUCK,
+- bounded Jelly-Psiduck private-cognition concern pressure,
+- the narrow The-Doctor-Lives confidentiality commitment-to-policy bridge,
+- the FirstPersonLoop involuntary-expression boundary.
 
-A donor `PROMOTE` verdict does not mean direct trunk integration. The mechanism must still pass an architecture-preserving production bridge, integrated ablation, cross-platform regression, and applicable long-horizon or renderer tests. No result here is a claim about phenomenal consciousness.
+All four are integrated into the v0.2 candidate. TinyPersona perception remains a host adapter rather than a core authority. Pretorius selective recall and Digital Subject continuity influence remain explicit redundancy rejections. Contextual plasticity, offscreen continuity, and Omnicore affect remain holds. Model-dependent steering and selective dual-process generation remain blocked pending compatible live-model reproduction.
 
+The integrated nine-trial longitudinal gate is green cross-platform at candidate evidence SHA `d481153628cad95ca4348e5f6a799b0472c808cb`. The 32-turn repeated-interaction stress gate is green cross-platform at evidence SHA `e66d7e9ffe9312f82a0d5a95b0ce7b0506f6c551`.
+
+Release hardening is also green for authentic v0.1 state compatibility. Workflow `37472903191` generated populated state and backups using the exact v0.1 source commit, then opened and restored them under v0.2 across Linux, Windows, and macOS on Python 3.11 and 3.13. The normalized result digest is `69f4be75e46bdecd624aec07a480bf81f064c52caaa9bea44b3debb8a73e513b`. The frozen record is `evidence/V01_TO_V02_UPGRADE_SNAPSHOT_d492f92.md`.
+
+That compatibility phase found and corrected one production observability defect: projection hashes previously depended on SQLite physical row order. v0.2 now normalizes projection rows by semantic content, so replay-equivalent causal state has a stable digest.
+
+The package is now labeled `0.2.0rc1`. Remaining technical release work is packaging and installed-wheel validation plus a final exact-head acceptance review. No result here is a claim about phenomenal consciousness.
 ## The core research rule
 
 The project follows one rule above all others:
@@ -48,7 +59,7 @@ Bride preserves Frankenstein's authority model. The host owns objective world st
 
 The new v0.2 work may add organs to this architecture but may not dissolve these boundaries. In particular, no planner receives an execution bypass, no inner-thought model can create world facts by saying them, no perception layer may rewrite objective world state, no retrieval system can promote reconstruction into lived autobiography, and no activation-steering system can become identity authority.
 
-## Frozen execution graph
+## Execution graph and current phase
 
 ```text
 accepted Frankenstein v0.1
@@ -56,55 +67,68 @@ accepted Frankenstein v0.1
         v
 freeze champion and provenance
         |
-        +--> donor archaeology and chat-history recovery
-        |
-        +--> benchmark design and frozen scenarios
-        |
-        v
-small challenger implementations
+        +--> donor archaeology and ChatGPT-history recovery
+        +--> frozen real-baseline qualification
         |
         v
-mechanism-local deterministic gates
+candidate mechanisms
         |
-        +--> fail -> diagnose -> correct challenger only -> retest
-        |
-        v
-matched longitudinal comparisons
-        |
-        +--> no measurable gain -> reject or hold
-        |
-        +--> adapter-only gain -> qualify adapter
-        |
-        +--> provenance/test gain -> promote infrastructure
-        |
-        +--> behavioral gain + green authority/replay/cost gates -> promote
+        +--> local correction loops
+        +--> held-out and ablation tests
+        +--> authority and replay gates
         |
         v
-integrated Frankenstein regression suite
+qualified production bridges
         |
         v
-renderer-swap and long-horizon evaluation
+one-at-a-time src/frankenstein integration
+        |
+        +--> bounded planning
+        +--> confidentiality pressure
+        +--> private-cognition concern pressure
+        +--> involuntary-expression boundary
         |
         v
-v0.2 candidate trunk
+cross-platform integration gates
+        |
+        v
+9-trial integrated longitudinal qualification
+        |
+        v
+8-trial repeated-interaction stress qualification
+        |
+        v
+authentic v0.1 direct-open and backup compatibility
+        |
+        v
+release hardening
+        |
+        +--> wheel and sdist build
+        +--> installed-wheel smoke tests
+        +--> documentation consistency
+        +--> final exact-head independent review
+        |
+        v
+v0.2 release proposal
 ```
 
-## Current donor qualification table
+The graph is currently in release hardening. Additional donor accumulation is out of scope until the current release candidate is either accepted or rejected.
+## Current donor qualification and integration table
 
-| Candidate | Source lineage | Real-baseline result | Current disposition |
+| Candidate | Source lineage | Measured result | Current disposition |
 | --- | --- | --- | --- |
-| Bounded endogenous planning | DUCK | 0.00 → 1.00 | **PROMOTE TO INTEGRATION CANDIDATE.** Restart, neutral-control, held-out-route, and single-DecisionEngine bridge tests are green. |
-| Bounded inner-ear feedback | Jelly-Psiduck + FirstPersonLoop | 0.00 → 1.00 | **PROMOTE, JELLY PRODUCTION BRIDGE PENDING.** Raw thought remains noncanonical; only bounded uncertain concern pressure is admitted. |
-| First-person perception filter | TinyPersonaEngine | 0.50 → 1.00 | **ADAPTER_ONLY.** Keep at the host/perception boundary. |
-| Selective provenance-aware recall | Pretorius V6 + Kiki | 1.00 → 1.00 | **REJECT: REDUNDANT.** Frankenstein already meets the frozen target. |
-| Generic state-to-policy bridge | The-Doctor-Lives | earlier 1.00 → 1.00 | **REJECT: REDUNDANT.** Frankenstein already has general state-to-action scoring. |
-| Confidentiality commitment-to-policy bridge | The-Doctor-Lives | 0.00 → 1.00 | **PROMOTE TO INTEGRATION CANDIDATE.** Narrow missing function; production bridge preserves the existing DecisionEngine. |
-| Continuity influence | Digital Subject | 1.00 → 1.00 | **REJECT: REDUNDANT.** Existing relationship pressure already produces the target history-sensitive decision. |
-| Bounded offscreen catch-up | Digital Subject + rho + Anima | 0.00 → 1.00 | **HOLD: COST.** Behavior improves, but the current adapter exceeds the frozen hot-path cost gate. |
-| Involuntary expression boundary | FirstPersonLoop | 0.00 → 1.00 | **PROMOTE TO INTEGRATION CANDIDATE.** Reflex and deliberate action remain separate. |
-| Contextual recurrent/plastic policy | The-Doctor-Lives + Pretorius-NN + Gelatinblob | 0.00 → 1.00 | **HOLD: COMPLEXITY.** Real capability gain, but complexity 0.42 exceeds the automatic 0.35 ceiling. |
-| Six-dimensional affect | Omnicore | 0.00 → 1.00 authored novelty case | **HOLD: HISTORICAL.** No production-level gap yet justifies the added axes. |
-| Resource-metabolic substrate | MADMAN | donor artifact executable | **RESEARCH HOLD / UNQUALIFIED.** Preserve the frozen Crucible evidence; no bounded Frankenstein transplant is justified yet. |
+| Bounded endogenous planning | DUCK | baseline failure to qualified success | **INTEGRATED RC DEFAULT.** Replayable plan state, bounded routes, restart persistence, ablation, and single-DecisionEngine authority are green. |
+| Bounded inner-ear feedback | Jelly-Psiduck + FirstPersonLoop | baseline failure to qualified success | **INTEGRATED RC DEFAULT.** Raw thought is noncanonical; only bounded uncertain private concern pressure can affect reflection utility. |
+| First-person perception filter | TinyPersonaEngine | 0.50 to 1.00 | **ADAPTER_ONLY.** Remains at the host/perception boundary. |
+| Selective provenance-aware recall | Pretorius V6 + Kiki | 1.00 to 1.00 | **REJECT: REDUNDANT.** Frankenstein already meets the frozen target. |
+| Generic state-to-policy bridge | The-Doctor-Lives | 1.00 to 1.00 in earlier generic case | **REJECT: REDUNDANT.** General state-to-action scoring already exists. |
+| Confidentiality commitment-to-policy bridge | The-Doctor-Lives | 0.00 to 1.00 | **INTEGRATED RC DEFAULT.** Narrow disclosure pressure only; unrelated decisions remain unaffected. |
+| Continuity influence | Digital Subject | 1.00 to 1.00 | **REJECT: REDUNDANT.** Existing relationship pressure already produces the target behavior. |
+| Bounded offscreen catch-up | Digital Subject + rho + Anima | 0.00 to 1.00 | **HOLD: COST.** The behavior gain is real, but the qualified implementation exceeded the frozen cost gate. |
+| Involuntary expression boundary | FirstPersonLoop | 0.00 to 1.00 | **INTEGRATED RC DEFAULT.** Reflex expression remains separate from deliberate action authority and canonical history. |
+| Contextual recurrent/plastic policy | The-Doctor-Lives + Pretorius-NN + Gelatinblob | 0.00 to 1.00 | **HOLD: COMPLEXITY.** Capability gain is real, but complexity 0.42 exceeds the 0.35 automatic-promotion ceiling. |
+| Six-dimensional affect | Omnicore | authored novelty case succeeds | **HOLD: HISTORICAL.** No production gap currently justifies the extra axes. |
+| Resource-metabolic substrate | MADMAN | preserved donor evidence | **RESEARCH HOLD / UNQUALIFIED.** No bounded production transplant is justified yet. |
 | Activation-space affect steering | npc-steering-plus | donor evidence only | **BLOCKED.** Requires compatible live-model reproduction. |
 | Selective dual-process generation | PersonaForge | published donor evidence | **BLOCKED.** Requires model-dependent reproduction. |
 | Subjective Frame receipt | Kiki + Wayfarer | attribution gain | **INFRASTRUCTURE_ONLY.** |
@@ -113,8 +137,7 @@ v0.2 candidate trunk
 | Forgetting-aware memory evaluation | Memora | evaluation gain | **INFRASTRUCTURE_ONLY.** |
 | Long-session drift protocol | ContextEcho | evaluation gain | **INFRASTRUCTURE_ONLY.** |
 
-The complete current evidence is in `evidence/REAL_BASELINE_SNAPSHOT_868dd0b.md` and `docs/PROMOTION_LEDGER.md`. Earlier micro-qualification results remain preserved because overturned wins and nulls are part of the research history.
-
+Promotion never deletes negative evidence. Earlier provisional wins, nulls, holds, failed bridges, and corrected tests remain preserved in `docs/PROMOTION_LEDGER.md`, `docs/EXPERIMENT_LEDGER.md`, and `docs/INTEGRATION_LEDGER.md`.
 ## Donor history and research legacy
 
 The project did not begin with Frankenstein. It is the current convergence point of a long sequence of increasingly strict experiments. The following history is part of the architecture because many current invariants were learned from failures rather than from first-principles design.
@@ -189,16 +212,23 @@ Bride exists because the prior corpus is now too rich to justify another intuiti
 
 The complete dated appendix is in `docs/RESEARCH_TIMELINE.md`. The donor provenance table is in `docs/DONOR_REGISTRY.md`. Both are subordinate to this README's architecture decisions.
 
-## v0.2 target architecture
+## Qualified v0.2 architecture
 
-The current v0.2 candidate is deliberately smaller than the pre-qualification design. The intended production candidate is Frankenstein v0.1 plus only the mechanisms that survived real-baseline qualification and can preserve architectural authority.
+The v0.2 release candidate is Frankenstein v0.1 plus exactly four behaviorally qualified core additions.
 
-The behaviorally qualified core candidates are: bounded DUCK planning, bounded Jelly inner-ear concern feedback, narrow confidentiality commitment pressure, and an explicit involuntary-expression boundary. TinyPersona remains an optional host adapter, not a new source of world truth. Subjective Frame receipts, Wayfarer renderer-swap evaluation, Bicentennial matched-history controls, Kurzweil developmental counterfactuals, Memora forgetting-aware evaluation, and ContextEcho drift probes form the evaluation and provenance shell.
+Bounded planning adds replayable prospective structure without creating a second executive. Plan steps become ordinary `ActionCandidate` objects and compete through the existing `DecisionEngine`.
 
-Several plausible mechanisms are intentionally absent from the target core. Pretorius selective recall is rejected for the current frozen case because Frankenstein already performs the target behavior. Digital Subject continuity influence is likewise redundant. Offscreen catch-up remains a cost hold. Contextual plasticity remains a complexity hold despite a real capability gain. Omnicore 6DE affect and MADMAN remain research substrates. Activation steering and PersonaForge selective inner monologue remain blocked until model-dependent reproduction.
+Confidentiality commitment pressure makes one previously inert prospective state causally active, but only when genuine disclosure is among the available actions. It does not create a general refusal bias.
 
-Production integration is staged, not monolithic. Each candidate first receives a Bride production bridge that proves it can use the existing DecisionEngine or a clearly separate non-deliberative channel. Only then can a separate candidate branch modify `src/frankenstein/`, one mechanism at a time, with the previous arm retained for ablation.
+Bounded private cognition preserves raw private thought as noncanonical. A deliberately admitted private concern is explicitly marked as uncertain, capped in intensity, deduplicated, and permitted to adjust reflection candidate utility. It cannot promote its own content into world truth, belief, memory, commitment, or public action.
 
+Involuntary expression is a separate transient channel for bounded reflexive output. It creates no canonical event and does not alter deliberate `DecisionReceipt` selection.
+
+The production authority model remains unchanged: the host owns objective world state and outcome authority, the canonical ledger owns history, projections remain disposable, the subject owns admitted subjective state, retrieval controls accessibility rather than truth, the `DecisionEngine` owns deliberate action competition, renderers own wording, and capabilities own external side effects.
+
+TinyPersona remains an adapter. Subjective Frame receipts, Wayfarer renderer-swap evaluation, Bicentennial matched-history controls, Kurzweil developmental counterfactuals, Memora retrieval evaluation, and ContextEcho drift probes remain in the evidence shell rather than the production cognitive core.
+
+Held and rejected mechanisms remain available as research challengers, not dormant production features.
 ## Detailed integration design
 
 ### Bounded planning
@@ -231,47 +261,150 @@ Every evaluated renderer frame should be reproducible enough to answer which can
 
 Bride adopts Wayfarer's semantic comparison boundary. A renderer swap may alter wording, rhythm, verbosity, and style. It must not alter sealed identity, slow beliefs, relationships, commitments, selected action, or other renderer-independent semantic state when the Subjective Frame is held fixed. Real-model evaluations will use frozen blinded provider cases. Prompt-only and structured-frame arms must use the same provider and model when possible so the effect of the architecture is not confused with model quality.
 
-## Longitudinal benchmark suite planned for v0.2
+## Integrated longitudinal and stress qualification
 
-The micro-harness is only the first gate. The integrated suite will run matched subjects through longer histories containing trust formation, betrayal, repair, confidentiality, interrupted commitments, ambiguous testimony, repeated failure, novel obstacles, quiet periods, offscreen absence, fatigue, relationship asymmetry, and renderer substitution. Each condition will preserve exact event traces and random seeds where randomness exists.
+The planned longitudinal suite has been executed.
 
-The key comparisons will include baseline versus one donor at a time, full candidate versus ablation, frozen versus plastic policy, ordinary versus selective recall, private cognition enabled versus disabled, structured frame versus prompt-only renderer control, and deterministic versus live-model expression. Mechanisms will also face held-out scenarios that were not used to tune thresholds.
+The first integrated gate contains nine deterministic whole-candidate trials:
 
-A mechanism that improves the authored scenario but fails held-out transfer will be demoted to HOLD. A mechanism that improves prose but leaves action and state unchanged will not count as a cognitive improvement. A mechanism that changes action while weakening provenance or world authority will be rejected.
+1. planning persistence under matched history and ablation,
+2. confidentiality policy activation,
+3. private-cognition policy activation,
+4. involuntary-expression isolation,
+5. all qualified pressures competing through one `DecisionEngine`,
+6. renderer-swap semantic invariance with different surface wording,
+7. nonperturbing diagnostic forks,
+8. remembering-versus-intrusion cue specificity,
+9. developmental path divergence from identical founders.
 
+All nine passed in six qualification artifacts across Linux, Windows, and macOS. The frozen snapshot is `evidence/INTEGRATED_LONGITUDINAL_SNAPSHOT_d481153.md`.
+
+The repeated-interaction stress gate adds eight longer trials at a 32-turn horizon:
+
+1. long-history replay and restart integrity,
+2. a four-step plan restarted before every step,
+3. confidentiality retention across 32 unrelated world events,
+4. repeated private-thought admission without concern amplification or memory pollution,
+5. 32-turn renderer divergence with identical decisions and semantic state,
+6. 32-turn diagnostic-fork isolation,
+7. cue-specific retrieval at 130 memories,
+8. developmental divergence across 16 matched expectation opportunities.
+
+All eight passed identically across the six Linux, Windows, and macOS qualification jobs. The normalized stress-result digest is `54534a007a118178ca7262c7c31ffae3c570856bf488456a2d3c0a984afa1271`. The frozen snapshot is `evidence/REPEATED_INTERACTION_STRESS_SNAPSHOT_e66d7e9.md`.
+
+These are bounded deterministic functional tests. They do not establish indefinite lifetime stability or arbitrary live-model invariance.
 ## Promotion and replacement policy
 
 Bride never overwrites the champion in place merely because a challenger passed a unit test. A promoted mechanism enters behind an interface and the previous implementation remains available as an ablation until the complete integrated regression and longitudinal suites are green. After promotion, the new mechanism becomes the candidate default but the old arm remains reproducible in evidence code.
 
 Replacement therefore means measured default selection, not deletion of history. `docs/PROMOTION_LEDGER.md` records every decision. A future better mechanism can replace a current default only by beating the current champion, not the original Frankenstein v0.1 score. This produces a true champion-versus-challenger lineage rather than permanent comparison to an obsolete baseline.
 
-## Repository layout
+## Repository and branch layout
 
-The inherited `src/frankenstein/` package is the frozen champion code until a promotion commit deliberately changes it. `src/bride/` contains challenger mechanisms, matched-fork qualification infrastructure, the real Frankenstein adapter, and the donor registry. `tests/test_bride_mechanisms.py`, `tests/test_bride_qualification.py`, `tests/test_bride_registry.py`, and `tests/test_bride_real_adapter.py` cover the lab. The `docs/` directory stores donor provenance, experiment protocol, research timeline, recovered chat-only history, experiment ledger, and provisional promotion history.
+`src/frankenstein/` is now the v0.2 production release candidate. It contains the accepted v0.1 runtime plus the four qualified integrations and the projection-digest hardening fix.
 
-Only after real-baseline qualification, held-out checks, and the applicable longitudinal gates are green may a mechanism move from `bride` into a versioned `frankenstein` production interface. Each promotion receives its own integration patch, regression run, and ablation rerun.
+`src/bride/` remains the permanent laboratory and evidence harness. It contains donor registries, frozen qualification scenarios, adapters, longitudinal and stress tests, provenance receipts, and research-only challengers. A Bride mechanism does not become production behavior merely because its code exists in this package.
 
+`tests/` contains both inherited Frankenstein regressions and v0.2 integration, ablation, authority, longitudinal, stress, and release-hardening tests.
+
+`docs/` contains donor provenance, research chronology, experiment/promotion/integration ledgers, and the release checklist. `evidence/` contains frozen cross-platform snapshots. `scripts/` contains the authentic v0.1 fixture generator and v0.2 upgrade verifier used by release CI.
+
+Branch roles:
+
+- `lab/v0.2-donor-qualification`: frozen donor-qualification laboratory.
+- `candidate/v0.2-qualified-integrations`: qualified integrated candidate and longitudinal/stress evidence.
+- `release/v0.2-rc1-hardening`: current release-candidate compatibility, packaging, and documentation branch.
+
+The original `Azimn/Frankenstein` repository remains the accepted v0.1 source baseline. Bride does not overwrite it during qualification.
 ## Commands
+
+Install for development:
 
 ```bash
 python -m pip install -e . pytest
 pytest -q
 python -m frankenstein eval
-bride-qualify list
 ```
 
-`bride-qualify list` shows the donor registry. Individual deterministic comparisons use `bride-qualify run <mechanism_id>`, and the real champion comparison adds `--real-frankenstein`. CI runs the inherited Frankenstein acceptance harness plus Bride tests and selected real-adapter cases.
+Initialize and inspect a character:
 
-## Current local qualification evidence
+```bash
+frankenstein init ./ada --sample
+frankenstein status ./ada
+frankenstein verify ./ada
+frankenstein doctor ./ada
+```
 
-The authoritative deterministic evidence is no longer local-only. GitHub Actions run `37422349002` at `868dd0be6f1b332e826f0da399073d59baae6763` produced six agreeing real-baseline artifacts across Linux, Windows, macOS, Python 3.11, and Python 3.13.
+Chat with the deterministic renderer:
 
-The qualification harness records baseline quality, challenger quality, quality gain, causal effect, specificity, truth preservation, authority preservation, semantic replay, identity preservation, latency, state size, and verdict. A challenger cannot win merely by behaving differently. It must move toward a preregistered target.
+```bash
+frankenstein chat ./ada jay "Hello."
+```
 
-The process has already overturned plausible early conclusions. Pretorius selective recall was a micro-harness winner but becomes a real-baseline redundancy because Frankenstein already scores 1.00 on the frozen target. Offscreen catch-up was an early promote but becomes a real-baseline HOLD under the cost gate. Contextual plasticity demonstrates a real missing capability but remains held by the complexity ceiling. These reversals are evidence that Bride is functioning as a discriminator rather than a donor-accumulation exercise.
+Use Ollama as a replaceable renderer:
 
-Stage-two held-out, restart, neutral-control, and adversarial tests are now part of the donor suite. Production-authority bridges for DUCK and the narrow Doctor-Lives commitment mechanism are green in run `37422748984`; the involuntary-expression bridge is green in run `37422850823`. Jelly remains the outstanding production bridge before the first integration branch is cut.
+```bash
+frankenstein chat ./ada jay "Hello." --ollama-model MODEL_NAME
+```
 
+Back up and restore:
+
+```bash
+frankenstein backup ./ada ./ada-backup.tgz
+frankenstein restore ./ada-backup.tgz ./ada-restored
+```
+
+Run Bride evidence tools:
+
+```bash
+bride-qualify list
+bride-qualify suite --real-frankenstein --output evidence/qualification-results.json
+bride-qualify longitudinal --output evidence/longitudinal-results.json
+bride-qualify stress --turns 32 --output evidence/stress-results.json
+```
+
+Upgrade instructions for existing v0.1 homes are in `UPGRADING.md`. Release history is in `CHANGELOG.md`.
+## Current qualification and release evidence
+
+The evidence chain is now entirely repository-backed and cross-platform.
+
+Real-baseline donor qualification:
+- evidence head `868dd0be6f1b332e826f0da399073d59baae6763`,
+- workflow `37422349002`,
+- frozen snapshot `evidence/REAL_BASELINE_SNAPSHOT_868dd0b.md`.
+
+Production integration:
+- bounded planning, confidentiality pressure, private-cognition pressure, and involuntary expression were integrated one at a time,
+- each slice preserved an ablation arm,
+- each accepted slice passed the inherited regression matrix and Bride qualification matrix,
+- failed integration attempts remain preserved in `docs/INTEGRATION_LEDGER.md`.
+
+Integrated longitudinal gate:
+- evidence SHA `d481153628cad95ca4348e5f6a799b0472c808cb`,
+- regression workflow `37427624732`,
+- qualification workflow `37427624706`,
+- 9/9 regression jobs and 6/6 qualification jobs green,
+- nine integrated trials green on every artifact,
+- snapshot `evidence/INTEGRATED_LONGITUDINAL_SNAPSHOT_d481153.md`.
+
+Repeated-interaction stress:
+- evidence SHA `e66d7e9ffe9312f82a0d5a95b0ce7b0506f6c551`,
+- regression workflow `37428534048`,
+- qualification workflow `37428534259`,
+- 9/9 regression jobs and 6/6 qualification jobs green,
+- eight stress trials green on every artifact,
+- normalized result SHA-256 `54534a007a118178ca7262c7c31ffae3c570856bf488456a2d3c0a984afa1271`,
+- snapshot `evidence/REPEATED_INTERACTION_STRESS_SNAPSHOT_e66d7e9.md`.
+
+Authentic v0.1 upgrade hardening:
+- source baseline `Azimn/Frankenstein@fdaf5be89ccf6991a20eb54649d5318a9adcb6ff`,
+- workflow `37472903191`,
+- six of six Linux, Windows, and macOS upgrade jobs green,
+- legacy event IDs, event hashes, semantic projection state, table records, and backups preserved,
+- normalized result SHA-256 `69f4be75e46bdecd624aec07a480bf81f064c52caaa9bea44b3debb8a73e513b`,
+- snapshot `evidence/V01_TO_V02_UPGRADE_SNAPSHOT_d492f92.md`.
+
+The release-hardening gate also caught and corrected projection-digest sensitivity to SQLite physical row order. This is a concrete example of why release evidence is kept separate from developer confidence.
 ## Known holds and rejected work
 
 Contextual recurrent plasticity is held despite a measured 0.00 to 1.00 real-baseline gain. It corrects a genuine global-habit context-collapse failure and survives restart and opposite-context probes, but complexity 0.42 exceeds the automatic 0.35 threshold.
@@ -298,20 +431,58 @@ Bride evaluates functional continuity, causal organization, developmental diverg
 
 The same restraint applies to negative results. A null lesion does not prove a mechanism can never matter; it proves that the mechanism did not matter under the frozen test. A successful authored scenario does not prove general human-likeness; it establishes a bounded capability that must survive held-out and longer-horizon evaluation.
 
-## Production roadmap
+## Release-candidate roadmap
 
-The immediate next gate is BQ-008: connect the qualified Jelly concern state to ordinary action competition through Frankenstein's existing `DecisionEngine`. The laboratory shortcut that directly chooses reflection is not production-acceptable.
+Donor qualification, core integration, integrated longitudinal evaluation, repeated-interaction stress, and authentic v0.1 upgrade compatibility are complete.
 
-After the Jelly bridge is green, Bride will freeze the donor-qualification head and create a separate `candidate/v0.2-qualified-integrations` branch. Production changes then proceed one mechanism at a time: bounded planning, narrow confidentiality commitment pressure, bounded Jelly concern pressure, and the separate involuntary-expression channel. TinyPersona remains an adapter rather than a core organ.
+The remaining technical path to a v0.2 release proposal is:
 
-Each integration keeps the old behavior reproducible as an ablation, runs the inherited Frankenstein suite and Bride qualification suite across Linux, Windows, and macOS, then reruns matched-history and held-out cases. The integrated candidate must subsequently face renderer-swap, ContextEcho-style long-session drift, Memora-style remembering/forgetting, and longer Bicentennial/Kurzweil counterfactual histories before v0.2 can be declared stronger as a whole.
+1. build the `0.2.0rc1` wheel and source distribution from the release branch,
+2. install the built wheel rather than the editable source tree,
+3. run acceptance and CLI smoke tests from that installed artifact on Linux, Windows, and macOS,
+4. confirm README, changelog, upgrade guide, and release checklist all describe the exact accepted head,
+5. run a final independent acceptance review against that exact head,
+6. only then propose a tag, GitHub Release, merge, or package publication.
 
-Only the integrated candidate that survives those gates should be proposed back to the original `Azimn/Frankenstein` repository. Bride remains the permanent laboratory, null-result archive, donor lineage, and source of the production justification.
+No additional donor mechanism enters the core during this phase. A new feature request returns the graph to qualification rather than bypassing release gates.
 
-## Definition of done for the donor qualification phase
+One human-authority item remains outside the engineering graph: the repository currently has no software license. Bride will not invent one. The owner must choose a license before package-index publication or other distribution that requires an explicit grant of reuse rights.
+## Definitions of done
 
-The phase is complete when the frozen baseline is reproducible, every donor has a recorded role and provenance, ChatGPT-only history is classified rather than silently mixed with repository evidence, every candidate has an explicit benchmark and verdict, local and cross-platform CI are green, promotion decisions are recorded permanently, and only measured winners are integrated into the Bride candidate trunk. A large architecture with many plausible organs is not success. A smaller architecture whose organs are demonstrably load-bearing is success.
+### Donor qualification
 
+Complete. The frozen baseline is reproducible, donor provenance is recorded, ChatGPT-only history is evidence-classed, every named candidate has a role and verdict, negative results are preserved, and only measured winners entered production integration.
+
+### v0.2 release candidate
+
+The release candidate is technically complete only when:
+
+- the four qualified integrations remain green together,
+- the longitudinal and stress evidence remains green,
+- authentic v0.1 direct-open and backup compatibility remains green,
+- wheel and source distribution build successfully,
+- the built wheel installs and passes acceptance/CLI smoke tests on Linux, Windows, and macOS,
+- documentation and version metadata match the exact reviewed head,
+- no known critical defect remains hidden behind a local-only test,
+- a final independent review accepts the exact head.
+
+A large architecture is not the success criterion. The release is accepted only if its organs are demonstrably load-bearing and the historical, authority, replay, upgrade, and packaging boundaries remain inspectable.
 ## Evidence appendices
 
-`docs/DONOR_REGISTRY.md` records donor references and allowed reuse. `docs/EXPERIMENT_PROTOCOL.md` defines the promotion method. `docs/RESEARCH_TIMELINE.md` preserves the complete lineage and negative results. `docs/PROMOTION_LEDGER.md` records current verdicts. `evidence/REAL_BASELINE_SNAPSHOT_868dd0b.md` freezes the first six-platform real-baseline consensus, while CI publishes machine-readable `qualification-results.json` artifacts for each matrix job.
+Primary records:
+
+- `docs/DONOR_REGISTRY.md`: donor provenance and allowed reuse.
+- `docs/EXPERIMENT_PROTOCOL.md`: qualification method.
+- `docs/RESEARCH_TIMELINE.md`: research lineage and negative results.
+- `docs/PROMOTION_LEDGER.md`: donor verdict history.
+- `docs/EXPERIMENT_LEDGER.md`: qualification execution history.
+- `docs/INTEGRATION_LEDGER.md`: production integration and longitudinal gates.
+- `docs/RELEASE_CHECKLIST.md`: release acceptance checklist.
+- `evidence/REAL_BASELINE_SNAPSHOT_868dd0b.md`: frozen real-baseline consensus.
+- `evidence/INTEGRATED_LONGITUDINAL_SNAPSHOT_d481153.md`: frozen nine-trial integrated consensus.
+- `evidence/REPEATED_INTERACTION_STRESS_SNAPSHOT_e66d7e9.md`: frozen repeated-interaction stress consensus.
+- `evidence/V01_TO_V02_UPGRADE_SNAPSHOT_d492f92.md`: frozen authentic upgrade consensus.
+- `CHANGELOG.md`: production change record.
+- `UPGRADING.md`: v0.1 to v0.2 operational upgrade guide.
+
+CI continues to publish machine-readable qualification, longitudinal, stress, and release-hardening artifacts per matrix job.
