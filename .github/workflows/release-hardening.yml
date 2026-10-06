@@ -1,0 +1,53 @@
+name: release-hardening
+
+on:
+  push:
+    branches:
+      - release/v0.2-rc1-hardening
+  pull_request:
+
+jobs:
+  v01-upgrade:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ["3.11", "3.13"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/checkout@v7
+        with:
+          repository: Azimn/Frankenstein
+          ref: fdaf5be89ccf6991a20eb54649d5318a9adcb6ff
+          path: _baseline-v01
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Generate authentic v0.1 state
+        env:
+          PYTHONPATH: ${{ github.workspace }}/_baseline-v01/src
+        run: >-
+          python scripts/generate_v01_fixture.py
+          --home evidence/v01-home
+          --backup evidence/v01-backup.tgz
+          --manifest evidence/v01-manifest.json
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install -e . pytest
+      - name: Verify v0.1 direct-open and backup compatibility
+        run: >-
+          python scripts/verify_v01_upgrade.py
+          --home evidence/v01-home
+          --backup evidence/v01-backup.tgz
+          --manifest evidence/v01-manifest.json
+          --workdir evidence/upgrade-work
+          --output evidence/v01-upgrade-result.json
+      - run: pytest -q
+      - run: python -m frankenstein eval
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-hardening-${{ runner.os }}-py${{ matrix.python-version }}
+          path: |
+            evidence/v01-manifest.json
+            evidence/v01-upgrade-result.json
+          if-no-files-found: error
