@@ -8,6 +8,8 @@ import tempfile
 import time
 
 from .contracts import ProbeResult, SubjectSnapshot
+from .mechanisms.affect6d import Affect6D
+from .mechanisms.involuntary import InvoluntaryExpressionGate
 from .mechanisms.perception import BoundedPerception, Stimulus
 from .mechanisms.planning import EndogenousPlanner
 from .mechanisms.policy_bridge import CommitmentPolicyBridge, PolicyCandidate
@@ -103,6 +105,7 @@ class FrankensteinSubjectAdapter:
                     tags=tuple(event.get("tags", ())),
                     salience=float(event.get("salience", 0.5)),
                     valence=float(event.get("valence", 0.0)),
+                    memory_kind=str(event.get("memory_kind", "episodic")),
                 )
             elif kind == "failed_route":
                 planner = EndogenousPlanner(self.lab_dir / "planning.json")
@@ -157,11 +160,38 @@ class FrankensteinSubjectAdapter:
         learned: tuple[str, ...] = ()
         decided = probe.get("baseline_decision", "engage")
         acted = decided
+        from frankenstein.decision import ActionCandidate
+
         policy_candidates = tuple(probe.get("policy_candidates", ()))
         if policy_candidates:
-            from frankenstein.decision import ActionCandidate
-            baseline_candidates = [ActionCandidate(str(x["name"]), base_utility=float(x["base"])) for x in policy_candidates]
-            baseline_receipt = self.engine.decision_engine.decide(baseline_candidates, actor_id=actor, context=cue)
+            baseline_candidates = [
+                ActionCandidate(str(x["name"]), base_utility=float(x["base"]))
+                for x in policy_candidates
+            ]
+            baseline_receipt = self.engine.decision_engine.decide(
+                baseline_candidates,
+                actor_id=actor,
+                context=cue,
+            )
+            decided = acted = baseline_receipt.selected
+
+        decision_candidates = tuple(probe.get("decision_candidates", ()))
+        if decision_candidates:
+            baseline_candidates = [
+                ActionCandidate(
+                    str(x["name"]),
+                    base_utility=float(x["base"]),
+                    relationship_weights=dict(x.get("relationship_weights", {})),
+                    need_weights=dict(x.get("need_weights", {})),
+                    affect_weights=dict(x.get("affect_weights", {})),
+                )
+                for x in decision_candidates
+            ]
+            baseline_receipt = self.engine.decision_engine.decide(
+                baseline_candidates,
+                actor_id=actor,
+                context=cue,
+            )
             decided = acted = baseline_receipt.selected
 
         if "tiny_persona_perception" in self.interventions:
@@ -175,11 +205,18 @@ class FrankensteinSubjectAdapter:
             hits = self.engine.memory.search(cue or actor, actor_id=actor, top_k=12)
             with self.engine.store.connect() as conn:
                 rows = {
-                    r["memory_id"]: float(r["valence"])
-                    for r in conn.execute("SELECT memory_id,valence FROM memories WHERE actor_id=?", (actor,))
+                    r["memory_id"]: (float(r["valence"]), str(r["kind"]))
+                    for r in conn.execute("SELECT memory_id,valence,kind FROM memories")
                 }
             items = tuple(
-                RecallItem(h.memory_id, h.text, h.actor_id, h.score, rows.get(h.memory_id, 0.0))
+                RecallItem(
+                    h.memory_id,
+                    h.text,
+                    h.actor_id,
+                    h.score,
+                    rows.get(h.memory_id, (0.0, "episodic"))[0],
+                    rows.get(h.memory_id, (0.0, "episodic"))[1],
+                )
                 for h in hits
             )
             trust = self.engine.relationship(actor).get("trust", 0.0)
@@ -229,11 +266,18 @@ class FrankensteinSubjectAdapter:
                 if probe.get("reflection_probe"):
                     decided = acted = "reflect"
 
-        if "first_person_involuntary_expression" in self.interventions and float(probe.get("pain", 0.0)) >= 0.8:
-            acted = "involuntary_vocalization"
+        if "first_person_involuntary_expression" in self.interventions:
+            reflex = InvoluntaryExpressionGate().evaluate(
+                pain=float(probe.get("pain", 0.0)),
+                surprise=float(probe.get("surprise", 0.0)),
+            )
+            if reflex is not None:
+                acted = reflex.action
 
         if "omnicore_six_dimensional_affect" in self.interventions and probe.get("novel", False):
-            predicted = ("novelty-sensitive caution",)
+            state = Affect6D().updated(novelty=0.8)
+            if state.caution_pressure() > 0.2:
+                predicted = ("novelty-sensitive caution",)
 
         if "recurrent_plastic_policy" in self.interventions and probe.get("repeated_failure", False):
             learned = ("history-sensitive latent tendency",)
