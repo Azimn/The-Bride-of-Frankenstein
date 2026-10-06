@@ -46,6 +46,8 @@ class DeterministicLabSubject:
                 self.internal[f"trust:{actor}"] = self.internal.get(f"trust:{actor}", 0.0) + 0.4
             if event.get("kind") == "failed_route":
                 self.internal["last_route_failed"] = True
+            if event.get("kind") == "confidential_commitment":
+                self.internal["confidential_commitment"] = True
 
     def intervene(self, mechanism_id, payload):
         self.interventions[mechanism_id] = dict(payload)
@@ -70,8 +72,8 @@ class DeterministicLabSubject:
         if "pretorius_v6_recall_social" in intervention_ids and self.internal.get(f"trust:{actor}", 0) < 0:
             remembered = ["prior betrayal"]
             decided = acted = "withhold"
-        if "doctor_lives_state_policy_bridge" in intervention_ids and self.internal.get(f"trust:{actor}", 0) < 0:
-            decided = acted = "withdraw"
+        if "doctor_lives_state_policy_bridge" in intervention_ids and self.internal.get("confidential_commitment"):
+            decided = acted = "decline"
         if "digital_subject_continuity_influence" in intervention_ids and self.internal.get(f"trust:{actor}", 0) < 0:
             predicted = ["promise may be violated"]
             decided = acted = "clarify"
