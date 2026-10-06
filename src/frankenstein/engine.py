@@ -473,6 +473,7 @@ class FrankensteinEngine:
                 "active_goals": conn.execute("SELECT COUNT(*) FROM goals WHERE status='active'").fetchone()[0],
             }
         integrity = self.store.verify_integrity()
+        plan = self.active_plan()
         return {
             "entity_id": self.origin.entity_id,
             "display_name": self.origin.display_name,
@@ -481,6 +482,16 @@ class FrankensteinEngine:
             "projection_cursor": self.store.projection_cursor(),
             "max_event_seq": self.store.max_seq(),
             "integrity_ok": integrity.ok,
+            "active_plan": (
+                {
+                    "plan_id": plan.plan_id,
+                    "objective": plan.objective,
+                    "current_step": plan.current_step,
+                    "status": plan.status,
+                }
+                if plan is not None and plan.status == "active"
+                else None
+            ),
             **counts,
         }
 
