@@ -21,7 +21,7 @@ Bride reuses mechanisms, invariants, tests, and evidence patterns rather than tr
 | Omnicore | 34b79be2c5980b394025a10f5ed743bb146dabf2 | Early portable persona, tiered memory and 6DE affect proposal |
 | FirstPersonLoopTest | ae4954f82aa048bcbae82d16f557262808f46594 | Hidden-state first-person transduction and private/public expression boundary |
 | integration-harness | 517cf431d91425987848dd756d318064e76a2794 | Reuse-first qualification workflow |
-| champion-versus-challenger | e0b6aa7487edcf7ffae5144d40d3a1aae4a86273 | Mechanism catalog, experiment ledger and champion lineage method |
+| champion-versus-challenger | e0b6aa7487edcf7ffae5144d40d3a1aae4a86273 | Mechanism catalog, experiment ledger and champion lineage method |\n| PersonaForge | 10363f65b9649ae258854568608da7add1d6cc98 | Selective dual-process trigger and long-dialogue persona-drift evaluation |\n| Memora | a6493188efc836d6511ed5e4163fe3ba87da30ff | Forgetting-aware long-horizon memory evaluation |\n| ContextEcho | 8495ec5b0175cbd3db5fbf5ba02f7e5bd0909f1f | Forked long-session drift probes that do not perturb the primary trajectory |\n| Anima | 21a54bd580cc189e7015f22d00336aa0bce35659 | Local-first lifecycle, afterglow, fold, autonomous wake, and fractal condensation patterns |
 
 Anima is an external architecture donor for local-first lifecycle ergonomics, afterglow, context folding, and fractal memory condensation. It is not used as identity authority.
 
