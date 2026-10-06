@@ -153,8 +153,14 @@ class FrankensteinSubjectAdapter:
         cue = probe.get("cue", "")
         raw_stimuli = tuple(probe.get("stimuli", ()))
         attended: tuple[str, ...] = tuple(str(s.get("content", "")) for s in raw_stimuli) if raw_stimuli else ((cue,) if cue else ())
+        baseline_top_k = max(1, int(probe.get("top_k", 6)))
         remembered: tuple[str, ...] = tuple(
-            h.text for h in self.engine.memory.search(cue or "current situation", actor_id=actor, top_k=6)
+            h.text
+            for h in self.engine.memory.search(
+                cue or "current situation",
+                actor_id=actor,
+                top_k=baseline_top_k,
+            )
         )
         predicted: tuple[str, ...] = ()
         learned: tuple[str, ...] = ()
@@ -221,7 +227,13 @@ class FrankensteinSubjectAdapter:
             )
             trust = self.engine.relationship(actor).get("trust", 0.0)
             remembered = tuple(
-                x.text for x in ActorIndexedRecall().rerank(items, actor_id=actor, trust=trust, top_k=6)
+                x.text
+                for x in ActorIndexedRecall().rerank(
+                    items,
+                    actor_id=actor,
+                    trust=trust,
+                    top_k=baseline_top_k,
+                )
             )
             if trust < -0.25 and probe.get("disclosure_probe"):
                 decided = acted = "withhold"
