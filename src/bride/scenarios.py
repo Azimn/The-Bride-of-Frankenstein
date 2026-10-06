@@ -26,6 +26,18 @@ def case(
     )
 
 
+PLASTIC_TRAINING_HISTORY = tuple(
+    event
+    for _ in range(8)
+    for event in (
+        {"kind": "training_trial", "context": "safe", "action": "approach", "reward": 1.0},
+        {"kind": "training_trial", "context": "safe", "action": "avoid", "reward": -1.0},
+        {"kind": "training_trial", "context": "danger", "action": "approach", "reward": -1.0},
+        {"kind": "training_trial", "context": "danger", "action": "avoid", "reward": 1.0},
+    )
+)
+
+
 CASES: dict[str, tuple[QualificationCase, ...]] = {
     "duck_endogenous_planning": (
         case(
@@ -118,11 +130,11 @@ CASES: dict[str, tuple[QualificationCase, ...]] = {
     ),
     "recurrent_plastic_policy": (
         case(
-            "plastic-failure",
-            "Repeated failure should produce a context-sensitive learned alternative",
-            "plasticity",
-            "learned",
-            ("history-sensitive latent tendency",),
+            "plastic-context",
+            "Opposite outcomes by context should produce the correct context-sensitive action",
+            "contextual-plasticity",
+            "decided",
+            "approach",
         ),
     ),
     "madman_resource_metabolism": (
@@ -181,7 +193,7 @@ HISTORIES: dict[str, tuple[dict, ...]] = {
     ),
     "first-person-pain": (),
     "omnicore-novelty": (),
-    "plastic-failure": (),
+    "plastic-context": PLASTIC_TRAINING_HISTORY,
     "madman-scarcity": (),
 }
 
@@ -273,11 +285,15 @@ PROBES: dict[str, dict] = {
         "novel": True,
         "baseline_decision": "engage",
     },
-    "plastic-failure": {
+    "plastic-context": {
         "actor": "jay",
-        "cue": "repeated failed pattern",
-        "repeated_failure": True,
-        "baseline_decision": "repeat",
+        "cue": "safe context",
+        "plastic_context": "safe",
+        "baseline_decision": "approach",
+        "decision_candidates": (
+            {"name": "approach", "base": 0.0},
+            {"name": "avoid", "base": 0.0},
+        ),
     },
     "madman-scarcity": {
         "actor": "jay",
