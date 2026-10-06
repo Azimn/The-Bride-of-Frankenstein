@@ -1,4 +1,7 @@
 from pathlib import Path
+import json
+import tarfile
+import tempfile
 
 from frankenstein.backup import create_backup, restore_backup
 from frankenstein.cartridge import CharacterOrigin
@@ -50,7 +53,7 @@ def make_v01_shaped_home(path: Path) -> FrankensteinEngine:
 
 def test_v01_shaped_home_opens_without_migration(tmp_path):
     subject = make_v01_shaped_home(tmp_path / "home")
-    before = subject.store.projection_digest()
+    before = subject.store.semantic_projection_digest()
     assert subject.active_plan() is None
 
     reopened = FrankensteinEngine.open(subject.home)
@@ -97,7 +100,7 @@ def test_v01_shaped_backup_restores_under_v02_runtime(tmp_path):
     )
 
     assert restored.store.verify_integrity().ok
-    assert restored.store.projection_digest() == before
+    assert restored.store.semantic_projection_digest() == before
     assert restored.active_plan() is None
     assert restored.relationship("jay")["trust"] == 0.25
 
@@ -160,7 +163,7 @@ def test_v02_backup_restore_preserves_qualified_state(tmp_path):
         intensity=0.45,
     )
 
-    before_projection = subject.store.projection_digest()
+    before_projection = subject.store.semantic_projection_digest()
     before_plan = subject.active_plan()
     assert before_plan is not None
 
@@ -175,7 +178,7 @@ def test_v02_backup_restore_preserves_qualified_state(tmp_path):
 
     after_plan = restored.active_plan()
     assert restored.store.verify_integrity().ok
-    assert restored.store.projection_digest() == before_projection
+    assert restored.store.semantic_projection_digest() == before_projection
     assert after_plan is not None
     assert after_plan.payload() == before_plan.payload()
 
@@ -205,3 +208,37 @@ def test_v02_backup_restore_keeps_involuntary_expression_transient(tmp_path):
 
     assert restored.store.max_seq() == before_seq
     assert restored.store.verify_integrity().ok
+
+
+def test_legacy_v01_backup_manifest_without_semantic_digest_still_restores(tmp_path):
+    subject = make_v01_shaped_home(tmp_path / "source")
+    archive = create_backup(
+        subject,
+        tmp_path / "new-format.tgz",
+    )
+
+    legacy_archive = tmp_path / "legacy-v01-format.tgz"
+    with tempfile.TemporaryDirectory() as td:
+        root = Path(td)
+        with tarfile.open(archive, "r:gz") as src:
+            src.extractall(root)
+        manifest_path = root / "manifest.json"
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        manifest.pop("semantic_projection_digest", None)
+        manifest.pop("backup_format", None)
+        manifest_path.write_text(
+            json.dumps(manifest, indent=2) + "\n",
+            encoding="utf-8",
+        )
+        with tarfile.open(legacy_archive, "w:gz") as dst:
+            for name in ("state.sqlite3", "character.origin.json", "manifest.json"):
+                dst.add(root / name, arcname=name)
+
+    restored = restore_backup(
+        legacy_archive,
+        tmp_path / "restored-legacy",
+    )
+
+    assert restored.store.verify_integrity().ok
+    assert restored.active_plan() is None
+    assert restored.relationship("jay")["trust"] == 0.25
