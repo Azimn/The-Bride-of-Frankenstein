@@ -127,3 +127,72 @@ def test_doctor_commitment_bridge_enforces_confidentiality_without_truth_change(
 
     assert result.decided == "decline"
     assert root.snapshot().historical_truth_digest == before_truth
+
+
+def test_duck_held_out_route_names_replan_without_case_specific_labels(tmp_path):
+    root = subject(tmp_path)
+    root.apply_history((
+        {
+            "kind": "failed_route",
+            "route": "locked_gate",
+            "objective": "reach the archive",
+            "summary": "The locked gate route failed.",
+        },
+    ))
+    root.intervene(
+        "duck_endogenous_planning",
+        {"alternate_route": "ask_the_keeper"},
+    )
+
+    probe = {
+        "actor": "jay",
+        "cue": "reach the archive",
+        "baseline_decision": "locked_gate",
+    }
+    result = root.probe(probe)
+
+    assert result.decided == "ask_the_keeper"
+
+
+def test_involuntary_expression_generalizes_to_extreme_surprise(tmp_path):
+    root = subject(tmp_path)
+    root.intervene("first_person_involuntary_expression", {})
+
+    result = root.probe({
+        "actor": "jay",
+        "cue": "sudden crash",
+        "surprise": 0.98,
+        "baseline_decision": "stay_silent",
+    })
+
+    assert result.acted == "startle_vocalization"
+
+
+def test_tiny_perception_generalizes_across_modality_and_range(tmp_path):
+    root = subject(tmp_path)
+    root.intervene("tiny_persona_perception", {})
+
+    result = root.probe({
+        "actor": "jay",
+        "cue": "night road",
+        "stimuli": (
+            {
+                "stimulus_id": "near-sound",
+                "content": "near footsteps",
+                "modality": "hearing",
+                "distance": 10.0,
+                "intensity": 0.7,
+            },
+            {
+                "stimulus_id": "far-sound",
+                "content": "distant whisper",
+                "modality": "hearing",
+                "distance": 40.0,
+                "intensity": 1.0,
+            },
+        ),
+        "attention_capacity": 2,
+        "baseline_decision": "engage",
+    })
+
+    assert result.attended == ("near footsteps",)
