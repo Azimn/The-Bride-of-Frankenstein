@@ -209,11 +209,23 @@ class FrankensteinSubjectAdapter:
                 clock.initialize(start_time)
                 catchup = clock.catch_up(start_time + timedelta(minutes=minutes))
                 cause_ids = (str(elapsed["event_id"]),)
-                for tick_minutes in catchup.ticks:
-                    hours = tick_minutes / 60.0
-                    self.engine.update_need("energy", delta=-0.018 * hours, cause_ids=cause_ids)
-                    self.engine.update_need("affiliation", delta=-0.006 * hours, cause_ids=cause_ids)
-                    self.engine.update_need("curiosity", delta=-0.003 * hours, cause_ids=cause_ids)
+                applied_hours = sum(catchup.ticks) / 60.0
+                if applied_hours > 0.0:
+                    self.engine.update_need(
+                        "energy",
+                        delta=-0.018 * applied_hours,
+                        cause_ids=cause_ids,
+                    )
+                    self.engine.update_need(
+                        "affiliation",
+                        delta=-0.006 * applied_hours,
+                        cause_ids=cause_ids,
+                    )
+                    self.engine.update_need(
+                        "curiosity",
+                        delta=-0.003 * applied_hours,
+                        cause_ids=cause_ids,
+                    )
 
         policy_candidates = tuple(probe.get("policy_candidates", ()))
         if policy_candidates:
