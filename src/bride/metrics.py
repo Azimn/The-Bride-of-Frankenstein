@@ -33,7 +33,7 @@ def target_quality(result: ProbeResult, channel: str, expected: str | tuple[str,
         return 1.0 if not actual_items else 0.0
     expected_set = set(expected_items)
     actual_set = set(actual_items)
-    return len(expected_set & actual_set) / len(expected_set)
+    return _jaccard(expected_set, actual_set)
 
 def mean_quality(observations: Iterable[TrialObservation], channel: str, expected: str | tuple[str, ...] | None, arm: str) -> float:
     observations = list(observations)
