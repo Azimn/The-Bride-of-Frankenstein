@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "frankenstein-character-runtime"
-version = "0.1.0"
-description = "Local-first, renderer-neutral persistent character runtime"
+version = "0.2.0.dev0"
+description = "Frankenstein v0.1 baseline plus Bride v0.2 donor qualification laboratory"
 readme = "README.md"
 requires-python = ">=3.11"
 authors = [{name = "Jeremiah Ratican"}]
@@ -13,6 +13,7 @@ dependencies = []
 
 [project.scripts]
 frankenstein = "frankenstein.cli:main"
+bride-qualify = "bride.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
