@@ -23,6 +23,7 @@ REAL_EXECUTABLE_CASES = {
     "bounded_offscreen_catchup",
     "first_person_involuntary_expression",
     "omnicore_six_dimensional_affect",
+    "recurrent_plastic_policy",
 }
 
 
