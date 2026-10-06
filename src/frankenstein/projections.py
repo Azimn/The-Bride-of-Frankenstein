@@ -88,6 +88,12 @@ class ProjectionManager:
             conn.execute("INSERT OR REPLACE INTO goals(goal_id,description,priority,status,parent_goal_id,source_event_id) VALUES(?,?,?,?,?,?)", (str(p["goal_id"]), str(p["description"]), _clamp(float(p.get("priority", 0.5)), 0.0, 1.0), "active", p.get("parent_goal_id"), event.event_id))
         elif kind == EventKind.GOAL_UPDATED.value:
             conn.execute("UPDATE goals SET status=?,source_event_id=? WHERE goal_id=?", (str(p["status"]), event.event_id, str(p["goal_id"])))
+        elif kind in (EventKind.PLAN_CREATED.value, EventKind.PLAN_UPDATED.value):
+            conn.execute(
+                "INSERT INTO runtime_state(key,value_json,source_event_id) VALUES('active_plan',?,?) "
+                "ON CONFLICT(key) DO UPDATE SET value_json=excluded.value_json,source_event_id=excluded.source_event_id",
+                (json.dumps(p, sort_keys=True), event.event_id),
+            )
         elif kind == EventKind.CONCERN_UPDATE.value:
             cid = str(p.get("concern_id") or new_id())
             conn.execute("INSERT INTO concerns(concern_id,description,intensity,status,source_event_id) VALUES(?,?,?,?,?) ON CONFLICT(concern_id) DO UPDATE SET description=excluded.description,intensity=excluded.intensity,status=excluded.status,source_event_id=excluded.source_event_id", (cid, str(p["description"]), _clamp(float(p.get("intensity", 0.5)), 0.0, 1.0), str(p.get("status", "active")), event.event_id))
