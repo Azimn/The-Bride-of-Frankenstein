@@ -245,6 +245,70 @@ class FrankensteinEngine:
         )
         return plan_id
 
+    def record_plan_outcome(
+        self,
+        *,
+        success: bool,
+        summary: str,
+        plan_id: str | None = None,
+        cause_ids: tuple[str, ...] = (),
+    ) -> EventRecord:
+        state = self.active_plan()
+        if state is None or state.status != "active":
+            raise ValueError("no active plan")
+        if plan_id is not None and plan_id != state.plan_id:
+            raise ValueError("plan id does not match the active plan")
+        step = state.current_step
+        if step is None:
+            raise ValueError("active plan has no current step")
+
+        outcome = self.record_outcome(
+            step,
+            reward=1.0 if success else -1.0,
+            summary=summary,
+            cause_ids=cause_ids,
+        )
+
+        route_index = state.route_index
+        step_index = state.step_index
+        status = "active"
+
+        if success:
+            step_index += 1
+            if step_index >= len(state.routes[route_index]):
+                status = "completed"
+        else:
+            route_index += 1
+            step_index = 0
+            if route_index >= len(state.routes):
+                route_index = max(0, len(state.routes) - 1)
+                status = "abandoned"
+
+        updated = PlanState(
+            plan_id=state.plan_id,
+            goal_id=state.goal_id,
+            objective=state.objective,
+            routes=state.routes,
+            route_index=route_index,
+            step_index=step_index,
+            status=status,
+            source_event_id=state.source_event_id,
+        )
+        plan_event = self._append_canonical(
+            EventKind.PLAN_UPDATED,
+            Authority.SYSTEM,
+            updated.payload(),
+            cause_ids=(outcome.event_id,),
+        )
+
+        if status in {"completed", "abandoned"}:
+            self.update_goal(
+                state.goal_id,
+                status,
+                cause_ids=(plan_event.event_id,),
+            )
+        return plan_event
+
     def set_concern(self, description: str, *, intensity: float = 0.5, concern_id: str | None = None, status: str = "active", cause_ids: tuple[str, ...] = ()) -> str:
         cid = concern_id or new_id()
         self._append_canonical(EventKind.CONCERN_UPDATE, Authority.SUBJECT, {"concern_id": cid, "description": description, "intensity": intensity, "status": status}, cause_ids=cause_ids)
