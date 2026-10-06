@@ -15,7 +15,8 @@ from .semantic import InterpretationPolicy, SemanticInterpreter
 from .memory import MemoryIndex
 from .projections import ProjectionManager
 from .planning import PlanProjection, PlanState, plan_action_candidate, validate_routes
-from .pressures import commitment_adjusted_candidates, open_commitments
+from .pressures import commitment_adjusted_candidates, open_commitments, private_concern_adjusted_candidates
+from .private_cognition import existing_private_concern, private_concern_text, validate_private_thought
 from .renderer import DeterministicRenderer, Renderer
 from .storage import SQLiteStore
 from .types import Authority, Canonicality, EventKind, EventRecord, SubjectiveFrame, WorldEvent, new_id
@@ -364,6 +365,31 @@ class FrankensteinEngine:
 
     def record_outcome(self, action_name: str, *, reward: float, summary: str, cause_ids: tuple[str, ...] = ()) -> EventRecord:
         return self._append_canonical(EventKind.ACTION_OUTCOME, Authority.HOST, {"action_name": action_name, "reward": reward, "summary": summary}, cause_ids=cause_ids)
+
+    def admit_private_concern(
+        self,
+        text: str,
+        *,
+        intensity: float = 0.45,
+        source_event_ids: tuple[str, ...] = (),
+    ) -> tuple[str, str]:
+        clean = validate_private_thought(text)
+        concern_text = private_concern_text(clean)
+        existing = existing_private_concern(self.store, concern_text)
+
+        proposal = self.private_thought(
+            clean,
+            source_event_ids=source_event_ids,
+        )
+        if existing is not None:
+            return proposal.event_id, existing
+
+        concern_id = self.set_concern(
+            concern_text,
+            intensity=max(0.0, min(0.65, float(intensity))),
+            cause_ids=(proposal.event_id,),
+        )
+        return proposal.event_id, concern_id
 
     def private_thought(self, text: str, *, source_event_ids: tuple[str, ...] = ()) -> EventRecord:
         return self._append(EventKind.PRIVATE_THOUGHT_PROPOSAL, Authority.RENDERER, {"text": text}, cause_ids=source_event_ids, canonicality=Canonicality.NONCANONICAL)
