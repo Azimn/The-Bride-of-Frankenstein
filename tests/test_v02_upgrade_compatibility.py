@@ -7,6 +7,7 @@ from frankenstein.backup import create_backup, restore_backup
 from frankenstein.cartridge import CharacterOrigin
 from frankenstein.decision import ActionCandidate
 from frankenstein.engine import FrankensteinEngine
+from frankenstein.private_cognition import active_private_concerns
 
 
 def origin():
@@ -60,7 +61,7 @@ def test_v01_shaped_home_opens_without_migration(tmp_path):
 
     assert reopened.store.get_meta("schema_version") == "1"
     assert reopened.store.verify_integrity().ok
-    assert reopened.store.projection_digest() == before
+    assert reopened.store.semantic_projection_digest() == before
     assert reopened.active_plan() is None
 
 
@@ -88,7 +89,7 @@ def test_v01_shaped_home_can_adopt_v02_plan_without_schema_change(tmp_path):
 
 def test_v01_shaped_backup_restores_under_v02_runtime(tmp_path):
     subject = make_v01_shaped_home(tmp_path / "source")
-    before = subject.store.projection_digest()
+    before = subject.store.semantic_projection_digest()
 
     archive = create_backup(
         subject,
@@ -102,7 +103,7 @@ def test_v01_shaped_backup_restores_under_v02_runtime(tmp_path):
     assert restored.store.verify_integrity().ok
     assert restored.store.semantic_projection_digest() == before
     assert restored.active_plan() is None
-    assert restored.relationship("jay")["trust"] == 0.25
+    assert restored.relationship("jay") == subject.relationship("jay")
 
 
 def test_restored_v01_backup_can_use_qualified_v02_mechanisms(tmp_path):
@@ -182,11 +183,10 @@ def test_v02_backup_restore_preserves_qualified_state(tmp_path):
     assert after_plan is not None
     assert after_plan.payload() == before_plan.payload()
 
-    with restored.store.connect() as conn:
-        private_concerns = conn.execute(
-            "SELECT COUNT(*) FROM runtime_state WHERE key LIKE 'private_cognition:%'"
-        ).fetchone()[0]
-    assert private_concerns >= 1
+    private_concerns = active_private_concerns(restored.store)
+    assert len(private_concerns) == 1
+    assert "revisit the relay problem" in private_concerns[0][0].lower()
+    assert private_concerns[0][1] == 0.45
 
 
 def test_v02_backup_restore_keeps_involuntary_expression_transient(tmp_path):
@@ -212,6 +212,7 @@ def test_v02_backup_restore_keeps_involuntary_expression_transient(tmp_path):
 
 def test_legacy_v01_backup_manifest_without_semantic_digest_still_restores(tmp_path):
     subject = make_v01_shaped_home(tmp_path / "source")
+    expected_relationship = subject.relationship("jay")
     archive = create_backup(
         subject,
         tmp_path / "new-format.tgz",
@@ -241,4 +242,4 @@ def test_legacy_v01_backup_manifest_without_semantic_digest_still_restores(tmp_p
 
     assert restored.store.verify_integrity().ok
     assert restored.active_plan() is None
-    assert restored.relationship("jay")["trust"] == 0.25
+    assert restored.relationship("jay") == expected_relationship
