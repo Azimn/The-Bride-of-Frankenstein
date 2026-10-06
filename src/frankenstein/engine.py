@@ -14,6 +14,7 @@ from .lock import FileLock
 from .semantic import InterpretationPolicy, SemanticInterpreter
 from .memory import MemoryIndex
 from .projections import ProjectionManager
+from .planning import PlanProjection, PlanState, plan_action_candidate, validate_routes
 from .renderer import DeterministicRenderer, Renderer
 from .storage import SQLiteStore
 from .types import Authority, Canonicality, EventKind, EventRecord, SubjectiveFrame, WorldEvent, new_id
@@ -49,6 +50,7 @@ class FrankensteinEngine:
             self.projections.ensure_current()
         self.memory = MemoryIndex(self.store)
         self.decision_engine = DecisionEngine(self.store, origin.action_priors)
+        self.plans = PlanProjection(self.store)
         self.renderer = renderer or DeterministicRenderer()
         self.capabilities = capabilities or CapabilityGate()
         self.interpreter = interpreter
