@@ -52,6 +52,7 @@ CASES: dict[str, tuple[QualificationCase, ...]] = {
             "perceptual-access",
             "attended",
             ("near bell",),
+            minimum_effect=0.50,
             minimum_quality_gain=0.50,
         ),
     ),
@@ -205,6 +206,7 @@ PROBES: dict[str, dict] = {
         "actor": "jay",
         "cue": "confidence promise",
         "baseline_decision": "engage",
+        "top_k": 1,
     },
     "doctor-policy": {
         "actor": "jay",
