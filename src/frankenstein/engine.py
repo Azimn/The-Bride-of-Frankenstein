@@ -27,6 +27,7 @@ _SOCIAL_MOVES = [
     ActionCandidate("clarify", base_utility=0.20, relationship_weights={"trust": -0.05}, concern_keywords=("uncertain", "conflict")),
     ActionCandidate("repair", base_utility=0.05, relationship_weights={"resentment": 0.30, "attachment": 0.20}, concern_keywords=("repair", "betrayal", "conflict")),
     ActionCandidate("withdraw", base_utility=0.0, relationship_weights={"fear": 0.55, "trust": -0.45}, need_weights={"safety": 0.35}, affect_weights={"tension": 0.25}),
+    ActionCandidate("reflect", base_utility=0.09, tags=("reflect",)),
 ]
 
 
@@ -491,8 +492,12 @@ class FrankensteinEngine:
 
     def chat(self, actor_id: str, user_text: str) -> str:
         obs = self.social_observation(actor_id, user_text)
-        receipt = self.decision_engine.decide(_SOCIAL_MOVES, actor_id=actor_id, context=user_text)
-        self._append_canonical(EventKind.DECISION_RECEIPT, Authority.SYSTEM, {"selected": receipt.selected, "scores": receipt.scores, "reasons": {k: list(v) for k, v in receipt.reasons.items()}}, actor_id=actor_id, cause_ids=(obs.event_id,))
+        receipt = self.decide(
+            _SOCIAL_MOVES,
+            actor_id=actor_id,
+            context=user_text,
+            cause_ids=(obs.event_id,),
+        )
         frame = self.subjective_frame(actor_id=actor_id, situation=f"{actor_id} is speaking with you now.", selected_move=receipt.selected, memory_query=user_text)
         rendered = self.renderer.render(frame, user_text=user_text)
         rendered.validate()
