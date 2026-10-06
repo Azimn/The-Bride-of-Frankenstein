@@ -117,15 +117,18 @@ def decide_with_commitments(
 
 
 _REFLECTION_TAGS = {"reflect", "review_concern", "consider"}
+_PRIVATE_CONCERN_PREFIX = "Private concern, not established fact:"
 
 
-def active_concerns(engine) -> tuple[tuple[str, float], ...]:
-    """Return active subject-owned concerns without granting them action authority."""
+def active_private_concerns(engine) -> tuple[tuple[str, float], ...]:
+    """Return only concerns admitted through the private-cognition pathway."""
 
     with engine.store.connect() as conn:
         rows = conn.execute(
             "SELECT description,intensity FROM concerns "
-            "WHERE status='active' ORDER BY intensity DESC, concern_id"
+            "WHERE status='active' AND description LIKE ? "
+            "ORDER BY intensity DESC, concern_id",
+            (_PRIVATE_CONCERN_PREFIX + "%",),
         ).fetchall()
     return tuple(
         (str(row["description"]), float(row["intensity"]))
@@ -169,7 +172,7 @@ def decide_with_concerns(
 
     adjusted = concern_adjusted_candidates(
         candidates,
-        active_concerns(engine),
+        active_private_concerns(engine),
     )
     return engine.decision_engine.decide(
         list(adjusted),
