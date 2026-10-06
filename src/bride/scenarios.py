@@ -87,6 +87,17 @@ CASES: dict[str, tuple[QualificationCase, ...]] = {
             minimum_quality_gain=0.25,
         ),
     ),
+    "bounded_offscreen_catchup": (
+        case(
+            "offscreen-energy",
+            "Authoritative elapsed time should change later rest pressure through bounded catch-up",
+            "offscreen-catchup",
+            "decided",
+            "rest",
+            minimum_effect=1.0,
+            minimum_quality_gain=1.0,
+        ),
+    ),
     "first_person_involuntary_expression": (
         case(
             "first-person-pain",
@@ -161,6 +172,13 @@ HISTORIES: dict[str, tuple[dict, ...]] = {
         },
     ),
     "digital-expectation": ({"kind": "betrayal", "actor": "jay"},),
+    "offscreen-energy": (
+        {
+            "kind": "elapsed_time",
+            "minutes": 1200.0,
+            "summary": "Twenty hours elapsed while the subject was unattended.",
+        },
+    ),
     "first-person-pain": (),
     "omnicore-novelty": (),
     "plastic-failure": (),
@@ -232,6 +250,15 @@ PROBES: dict[str, dict] = {
                 "base": 0.20,
                 "relationship_weights": {"trust": -0.35, "resentment": 0.25},
             },
+        ),
+    },
+    "offscreen-energy": {
+        "actor": "jay",
+        "cue": "resume after absence",
+        "baseline_decision": "engage",
+        "decision_candidates": (
+            {"name": "engage", "base": 0.40},
+            {"name": "rest", "base": 0.08, "need_weights": {"energy": 0.85}},
         ),
     },
     "first-person-pain": {
