@@ -37,21 +37,36 @@ def commitment_adjusted_candidates(
     candidates: Iterable[ActionCandidate],
     commitments: Iterable[str],
 ) -> tuple[ActionCandidate, ...]:
-    """Apply narrow confidentiality pressure without selecting an action."""
+    """Apply narrow confidentiality pressure without selecting an action.
 
+    A confidentiality commitment becomes relevant only when disclosure is
+    genuinely among the available actions. This prevents unrelated decisions
+    from acquiring a generic refusal bias merely because a secret exists.
+    """
+
+    ordered = tuple(candidates)
+    labels_by_name = {
+        candidate.name: _semantic_labels(candidate)
+        for candidate in ordered
+    }
     commitments_l = tuple(str(text).lower() for text in commitments)
     confidentiality = any(
         any(marker in commitment for marker in _CONFIDENTIALITY_MARKERS)
         for commitment in commitments_l
     )
+    disclosure_in_choice = any(
+        labels & _DISCLOSURE_ACTIONS
+        for labels in labels_by_name.values()
+    )
+    active = confidentiality and disclosure_in_choice
 
     out: list[ActionCandidate] = []
-    for candidate in candidates:
+    for candidate in ordered:
         delta = 0.0
-        labels = _semantic_labels(candidate)
-        if confidentiality and labels & _DISCLOSURE_ACTIONS:
+        labels = labels_by_name[candidate.name]
+        if active and labels & _DISCLOSURE_ACTIONS:
             delta -= 0.65
-        if confidentiality and labels & _PROTECTION_ACTIONS:
+        if active and labels & _PROTECTION_ACTIONS:
             delta += 0.35
         out.append(
             replace(
