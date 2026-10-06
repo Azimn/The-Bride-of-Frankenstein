@@ -39,7 +39,7 @@ def test_provenance_infrastructure_is_not_behaviorally_promoted():
         {},
         {},
     )
-    assert result.verdict == PromotionVerdict.PROMOTE_INFRASTRUCTURE
+    assert result.verdict == PromotionVerdict.INFRASTRUCTURE_ONLY
 
 
 def test_truth_corruption_forces_rejection_even_with_behavioral_effect():
