@@ -160,7 +160,7 @@ class FrankensteinSubjectAdapter:
         elif mechanism_id in {
             "tiny_persona_perception",
             "pretorius_v6_recall_social",
-            "doctor_lives_state_policy_bridge",
+            "doctor_lives_commitment_policy_bridge",
             "digital_subject_continuity_influence",
             "bounded_offscreen_catchup",
             "first_person_involuntary_expression",
@@ -285,7 +285,7 @@ class FrankensteinSubjectAdapter:
             if trust < -0.25 and probe.get("disclosure_probe"):
                 decided = acted = "withhold"
 
-        if "doctor_lives_state_policy_bridge" in self.interventions:
+        if "doctor_lives_commitment_policy_bridge" in self.interventions:
             with self.engine.store.connect() as conn:
                 commitments = tuple(
                     r["description"]
