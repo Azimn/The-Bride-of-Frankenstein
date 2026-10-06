@@ -88,3 +88,33 @@ Evidence:
 Verdict: **ACCEPT AS v0.2 CANDIDATE DEFAULT**
 
 Next slice: involuntary-expression boundary.
+
+
+## Integration Slice 3: bounded private cognition and Jelly concern pressure
+
+Status: **GREEN**
+
+Accepted implementation head: `3ed63d5ee6d19153ff407267b1e6821d9fc7a1bb`
+
+Regression workflow: `37426401544`
+
+Bride qualification workflow: `37426401471`
+
+Evidence:
+- 9/9 regression jobs passed across Linux, Windows, and macOS on Python 3.11, 3.12, and 3.13.
+- 6/6 Bride qualification jobs passed across Linux, Windows, and macOS on Python 3.11 and 3.13.
+- Raw private thought remains a noncanonical renderer proposal.
+- Machine telemetry markers and UUID-like identifiers are rejected before any event is written.
+- The admitted production effect is only a capped concern explicitly labeled `Private concern, not established fact:`.
+- Fabricated private claims do not become memories, beliefs, or host-owned world events.
+- Repeated identical private thoughts do not stack duplicate concerns.
+- Only admitted private concerns receive Jelly-specific reflection pressure. Ordinary Frankenstein concerns remain an ablation control.
+- `include_private_concerns=False` preserves the prior decision path.
+- Stronger homeostatic pressure can beat reflection.
+- Private-concern pressure survives restart.
+- `chat()` now routes through the unified engine decision gateway, preserving the social-observation event as the decision receipt's causal parent.
+- The legacy explicit `admit_reflection` API remains available as a separate deliberate reflection operation; the v0.2 private-cognition pathway does not call it automatically.
+
+Verdict: **ACCEPT AS v0.2 CANDIDATE DEFAULT**
+
+Next slice: separate involuntary-expression channel.
