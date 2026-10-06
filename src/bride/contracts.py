@@ -6,7 +6,7 @@ from typing import Any, Protocol
 
 
 GOVERNING_QUESTION = (
-    "Does changing this internal state predictably change what the same individual "
+    "Does changing this internal state predictably improve what the same individual "
     "attends to, remembers, predicts, learns, decides, or does later, while preserving "
     "historical truth and architectural authority?"
 )
@@ -24,8 +24,8 @@ class PromotionVerdict(str, Enum):
     PROMOTE = "promote"
     HOLD = "hold"
     REJECT = "reject"
-    PROMOTE_INFRASTRUCTURE = "promote_infrastructure"
-    QUALIFY_ADAPTER = "qualify_adapter"
+    INFRASTRUCTURE_ONLY = "infrastructure_only"
+    ADAPTER_ONLY = "adapter_only"
     BLOCKED = "blocked"
 
 
@@ -81,7 +81,10 @@ class QualificationCase:
     description: str
     intervention_label: str
     expected_channel: str
+    expected_value: str | tuple[str, ...] | None = None
     minimum_effect: float = 0.25
+    minimum_quality_gain: float = 0.25
+    minimum_challenger_quality: float = 0.75
     minimum_replicates: int = 3
     require_renderer_invariance: bool = False
     maximum_latency_ratio: float = 2.0
@@ -95,6 +98,9 @@ class QualificationResult:
     causal_effect: float
     consistency: float
     specificity: float
+    baseline_quality: float
+    challenger_quality: float
+    quality_gain: float
     truth_preserved: bool
     authority_preserved: bool
     replay_preserved: bool
