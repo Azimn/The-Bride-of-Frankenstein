@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
+import hashlib
 import json
 import shutil
 
@@ -9,6 +10,65 @@ from frankenstein.backup import create_backup, restore_backup
 from frankenstein.decision import ActionCandidate
 from frankenstein.engine import FrankensteinEngine
 from frankenstein.storage import SCHEMA_VERSION
+
+
+def _semantic_projection_digest(engine: FrankensteinEngine) -> str:
+    tables = (
+        "needs",
+        "affect",
+        "relationships",
+        "beliefs",
+        "commitments",
+        "expectations",
+        "goals",
+        "concerns",
+        "habits",
+        "memory_edges",
+        "runtime_state",
+    )
+    snapshot = {}
+    with engine.store.connect() as conn:
+        for table in tables:
+            rows = conn.execute(f"SELECT * FROM {table}").fetchall()
+            normalized = [
+                {key: row[key] for key in row.keys()}
+                for row in rows
+            ]
+            normalized.sort(
+                key=lambda item: json.dumps(
+                    item,
+                    sort_keys=True,
+                    separators=(",", ":"),
+                    ensure_ascii=False,
+                )
+            )
+            snapshot[table] = normalized
+
+        rows = conn.execute(
+            "SELECT memory_id,kind,actor_id,text,tags_json,salience,valence,"
+            "arousal,created_at,source_event_id FROM memories"
+        ).fetchall()
+        memories = [
+            {key: row[key] for key in row.keys()}
+            for row in rows
+        ]
+        memories.sort(
+            key=lambda item: json.dumps(
+                item,
+                sort_keys=True,
+                separators=(",", ":"),
+                ensure_ascii=False,
+            )
+        )
+        snapshot["memories"] = memories
+
+    payload = json.dumps(
+        snapshot,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=False,
+    ).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
 
 
 def _canonical_identity(engine: FrankensteinEngine) -> tuple[list[str], list[str]]:
@@ -68,14 +128,17 @@ def main() -> None:
     assert upgraded.store.verify_integrity().ok
     assert upgraded.active_plan() is None
 
+    semantic_before_rebuild = _semantic_projection_digest(upgraded)
     projection_before_rebuild = upgraded.store.projection_digest()
     projection_after_rebuild = upgraded.rebuild()
+    semantic_after_rebuild = _semantic_projection_digest(upgraded)
     ids_after, hashes_after = _canonical_identity(upgraded)
 
     assert ids_after == ids_before
     assert hashes_after == hashes_before
+    assert semantic_before_rebuild == manifest["semantic_projection_digest"]
+    assert semantic_after_rebuild == manifest["semantic_projection_digest"]
     assert projection_after_rebuild == projection_before_rebuild
-    assert projection_after_rebuild == manifest["projection_digest"]
 
     restored_v01 = restore_backup(
         baseline_backup,
@@ -182,7 +245,10 @@ def main() -> None:
         "baseline_source": manifest["source"],
         "schema_version": SCHEMA_VERSION,
         "baseline_event_count": manifest["max_event_seq"],
-        "legacy_projection_preserved": True,
+        "legacy_semantic_projection_preserved": True,
+        "candidate_projection_digest_replay_stable": (
+            projection_after_rebuild == projection_before_rebuild
+        ),
         "legacy_event_ids_preserved": True,
         "legacy_event_hashes_preserved": True,
         "legacy_table_counts_preserved": True,
