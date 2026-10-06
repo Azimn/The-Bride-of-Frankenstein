@@ -17,7 +17,7 @@ def run(mechanism_id, **payload):
 
 
 def test_state_policy_bridge_qualifies_in_reference_case():
-    result = run("doctor_lives_state_policy_bridge")
+    result = run("doctor_lives_commitment_policy_bridge")
     assert result.verdict == PromotionVerdict.PROMOTE
     assert result.causal_effect == 1.0
     assert result.truth_preserved
