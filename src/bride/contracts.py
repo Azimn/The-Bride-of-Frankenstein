@@ -24,7 +24,8 @@ class PromotionVerdict(str, Enum):
     PROMOTE = "promote"
     HOLD = "hold"
     REJECT = "reject"
-    INFRASTRUCTURE_ONLY = "infrastructure_only"
+    PROMOTE_INFRASTRUCTURE = "promote_infrastructure"
+    QUALIFY_ADAPTER = "qualify_adapter"
     BLOCKED = "blocked"
 
 
