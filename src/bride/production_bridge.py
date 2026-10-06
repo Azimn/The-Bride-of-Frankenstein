@@ -114,3 +114,65 @@ def decide_with_commitments(
         actor_id=actor_id,
         context=context,
     )
+
+
+_REFLECTION_TAGS = {"reflect", "review_concern", "consider"}
+
+
+def active_concerns(engine) -> tuple[tuple[str, float], ...]:
+    """Return active subject-owned concerns without granting them action authority."""
+
+    with engine.store.connect() as conn:
+        rows = conn.execute(
+            "SELECT description,intensity FROM concerns "
+            "WHERE status='active' ORDER BY intensity DESC, concern_id"
+        ).fetchall()
+    return tuple(
+        (str(row["description"]), float(row["intensity"]))
+        for row in rows
+    )
+
+
+def concern_adjusted_candidates(
+    candidates: Iterable[ActionCandidate],
+    concerns: Iterable[tuple[str, float]],
+) -> tuple[ActionCandidate, ...]:
+    """Translate bounded concern intensity into candidate pressure only."""
+
+    concern_rows = tuple(
+        (str(description), max(0.0, min(0.65, float(intensity))))
+        for description, intensity in concerns
+    )
+    max_intensity = max((intensity for _, intensity in concern_rows), default=0.0)
+
+    out: list[ActionCandidate] = []
+    for candidate in candidates:
+        tags = {tag.lower() for tag in candidate.tags}
+        delta = max_intensity if tags & _REFLECTION_TAGS else 0.0
+        out.append(
+            replace(
+                candidate,
+                base_utility=float(candidate.base_utility) + delta,
+            )
+        )
+    return tuple(out)
+
+
+def decide_with_concerns(
+    engine,
+    candidates: Iterable[ActionCandidate],
+    *,
+    actor_id: str | None = None,
+    context: str = "",
+) -> DecisionReceipt:
+    """Let concern pressure compete through the existing DecisionEngine."""
+
+    adjusted = concern_adjusted_candidates(
+        candidates,
+        active_concerns(engine),
+    )
+    return engine.decision_engine.decide(
+        list(adjusted),
+        actor_id=actor_id,
+        context=context,
+    )
