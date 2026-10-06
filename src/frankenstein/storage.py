@@ -161,6 +161,8 @@ _ALLOWED_CANONICAL_AUTHORITIES: dict[str, set[str]] = {
     EventKind.AFFECT_UPDATE.value: {Authority.SYSTEM.value, Authority.SUBJECT.value},
     EventKind.EXPECTATION_CREATED.value: {Authority.SUBJECT.value},
     EventKind.EXPECTATION_UPDATED.value: {Authority.SUBJECT.value, Authority.SYSTEM.value},
+    EventKind.PLAN_CREATED.value: {Authority.SUBJECT.value},
+    EventKind.PLAN_UPDATED.value: {Authority.SUBJECT.value, Authority.SYSTEM.value},
 }
 
 
