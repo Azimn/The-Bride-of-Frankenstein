@@ -18,7 +18,7 @@ The first Bride micro-qualification suite contains eleven candidate or infrastru
 
 The project follows one rule above all others:
 
-> What happens to the character must be able to change the character who encounters what happens next, and the change must be measurable for an inspectable reason.
+> **Does changing this internal state predictably change what the same individual attends to, remembers, predicts, learns, decides, or does later, while preserving historical truth and architectural authority?**\n\nThe older continuity rule still applies underneath it: what happens to the character must be able to change the character who encounters what happens next, and the change must be measurable for an inspectable reason.
 
 A mechanism does not earn a place because it sounds cognitively plausible, resembles neuroscience, produces eloquent internal narration, has many parameters, or appeared in a successful earlier prototype. It earns a place by correcting a defined baseline failure under frozen conditions without weakening authority, replay, provenance, portability, or boundedness.
 
