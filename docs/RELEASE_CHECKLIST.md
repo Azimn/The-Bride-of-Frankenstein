@@ -17,14 +17,34 @@ This checklist governs promotion of the Bride v0.2 candidate from release harden
 - [x] Authentic v0.1 backup restore under v0.2 green cross-platform.
 - [x] Projection digest made independent of SQLite physical row order.
 - [x] v0.2 backup/restore after adding new state green.
-- [ ] Wheel and source distribution build successfully from the release branch.
-- [ ] Built wheel installs without editable-source fallback.
-- [ ] Installed-wheel acceptance harness green on Linux, Windows, and macOS.
-- [ ] Installed-wheel CLI smoke tests green.
-- [ ] README current-status, architecture, commands, and roadmap sections reconciled with the actual release candidate.
-- [ ] Changelog and upgrade guide included in the release tree.
-- [ ] Final release-candidate matrix green at one exact head.
-- [ ] Final independent acceptance review performed against that exact head.
+- [x] Wheel and source distribution build successfully from the release branch.
+- [x] Built wheel installs without editable-source fallback.
+- [x] Installed-wheel acceptance harness green on Linux, Windows, and macOS.
+- [x] Installed-wheel CLI smoke tests green.
+- [x] README current-status, architecture, commands, and roadmap sections reconciled with the actual release candidate.
+- [x] Changelog and upgrade guide included in the release tree.
+- [x] Technical release-candidate implementation matrix green at exact head `2f86f189c08548807ce8ece2be5837463ffcbb1c`.
+- [ ] Final independent acceptance review performed against the final exact head.
+
+## Exact technical evidence
+
+Implementation head:
+
+`2f86f189c08548807ce8ece2be5837463ffcbb1c`
+
+Normal regression workflow:
+
+`37474488230`, 9 of 9 jobs passed.
+
+Release-hardening workflow:
+
+`37474488503`, 12 of 12 jobs passed.
+
+Frozen record:
+
+`evidence/RC1_TECHNICAL_RELEASE_SNAPSHOT_2f86f18.md`
+
+The final documentation-only head containing this checklist and snapshot must also pass the repository workflows before assessor handoff. That final CI verification does not replace the independent acceptance review.
 
 ## Human-authority items
 
@@ -34,6 +54,6 @@ Bride does not infer a license. Absence of a license is not treated as permissio
 
 ## Release boundary
 
-Do not tag `v0.2.0`, create a GitHub Release, publish a package, or merge the candidate into another repository until all technical checklist items are green and the repository owner has made any required licensing/distribution decisions.
+Do not tag `v0.2.0`, create a GitHub Release, publish a package, or merge the candidate into another repository until all technical checklist items are green and the repository owner has made any required licensing or distribution decisions.
 
-A release tag must point to the exact reviewed head. If any file changes after final acceptance, rerun the affected gates before tagging.
+A release tag must point to the exact independently reviewed head. If any implementation file changes after final acceptance, rerun the affected gates before tagging.
