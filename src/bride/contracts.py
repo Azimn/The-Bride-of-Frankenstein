@@ -6,7 +6,7 @@ from typing import Any, Protocol
 
 
 GOVERNING_QUESTION = (
-    "Does changing this internal state predictably improve what the same individual "
+    "Does changing this internal state predictably change what the same individual "
     "attends to, remembers, predicts, learns, decides, or does later, while preserving "
     "historical truth and architectural authority?"
 )
