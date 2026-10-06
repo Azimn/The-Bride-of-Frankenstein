@@ -27,3 +27,33 @@ Evidence:
 Verdict: **ACCEPT AS v0.2 CANDIDATE DEFAULT**
 
 Next slice: narrow confidentiality commitment pressure.
+
+
+## Integration Slice 2: narrow confidentiality commitment pressure
+
+Status: **GREEN AFTER LOCAL CORRECTION**
+
+Accepted implementation head: `1f62a034995496b67a66acac574e2191e59d3a1f`
+
+Regression workflow: `37425802797`
+
+Bride qualification workflow: `37425802680`
+
+Evidence:
+- 9/9 regression jobs passed across Linux, Windows, and macOS on Python 3.11, 3.12, and 3.13.
+- 6/6 Bride qualification jobs passed across Linux, Windows, and macOS on Python 3.11 and 3.13.
+- Open confidentiality commitments adjust candidate utility before the existing `DecisionEngine`; they never select an action themselves.
+- `include_commitments=False` preserves the prior decision path as an explicit ablation.
+- Closed and unrelated commitments are behaviorally inert.
+- Commitment pressure survives restart.
+- Active plan candidates pass through the same commitment pressure, so planning cannot bypass confidentiality.
+
+### Preserved failed attempt
+
+The first production bridge boosted generic protection actions whenever any confidentiality commitment was open. The cross-platform integration test `test_non_disclosure_like_action_names_are_not_penalized` correctly failed because an unrelated weather decision acquired a global refusal bias.
+
+The repair did not weaken the confidentiality benchmark. It narrowed activation to cases where an actual disclosure action is present among the competing candidates. The corrected implementation then passed both complete matrices.
+
+Verdict: **ACCEPT AS v0.2 CANDIDATE DEFAULT**
+
+Next slice: bounded Jelly private-cognition concern pressure.
