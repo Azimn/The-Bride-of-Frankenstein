@@ -4,6 +4,7 @@ from dataclasses import replace
 from typing import Iterable
 
 from .decision import ActionCandidate
+from .private_cognition import active_private_concerns
 from .storage import SQLiteStore
 
 
@@ -68,6 +69,35 @@ def commitment_adjusted_candidates(
             delta -= 0.65
         if active and labels & _PROTECTION_ACTIONS:
             delta += 0.35
+        out.append(
+            replace(
+                candidate,
+                base_utility=float(candidate.base_utility) + delta,
+            )
+        )
+    return tuple(out)
+
+
+_REFLECTION_ACTIONS = {"reflect", "review_concern", "consider"}
+
+
+def private_concern_adjusted_candidates(
+    candidates: Iterable[ActionCandidate],
+    store: SQLiteStore,
+) -> tuple[ActionCandidate, ...]:
+    """Apply bounded private-concern pressure without selecting an action."""
+
+    ordered = tuple(candidates)
+    concerns = active_private_concerns(store)
+    max_intensity = max(
+        (intensity for _, intensity in concerns),
+        default=0.0,
+    )
+
+    out: list[ActionCandidate] = []
+    for candidate in ordered:
+        labels = _semantic_labels(candidate)
+        delta = max_intensity if labels & _REFLECTION_ACTIONS else 0.0
         out.append(
             replace(
                 candidate,
