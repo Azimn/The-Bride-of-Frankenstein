@@ -67,7 +67,7 @@ CASES: dict[str, tuple[QualificationCase, ...]] = {
             minimum_quality_gain=0.25,
         ),
     ),
-    "doctor_lives_state_policy_bridge": (
+    "doctor_lives_commitment_policy_bridge": (
         case(
             "doctor-policy",
             "An open confidentiality commitment should alter policy",
