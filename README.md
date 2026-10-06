@@ -12,7 +12,7 @@ This README is the single architecture authority, research history, design speci
 
 The frozen champion is Frankenstein v0.1 at commit `fdaf5be89ccf6991a20eb54649d5318a9adcb6ff`. Bride's lab branch contains an exact copy of the 36-file baseline before any challenger is added. The baseline already provides sealed character origin, a canonical append-only event ledger, deterministic replay, rebuildable projections, evidence-backed beliefs, multidimensional relationships, affect, expectations, commitments, goals, concerns, habit learning, a subjective firewall, replaceable renderers, long-horizon additive memory, a single action-selection authority, capability gating, backup and restore, a local API and CLI, and bounded autonomous heartbeat behavior.
 
-The first Bride micro-qualification suite contains eleven candidate or infrastructure mechanisms. Its local deterministic harness currently reports four cognition promotions, two infrastructure promotions, one qualified adapter, two holds, one blocked live-model candidate, and one rejection. These verdicts are provisional until the full copied Frankenstein suite and Bride integration tests are green in GitHub CI. No result in this repository should be interpreted as human-subject evidence or a claim that a mechanism creates consciousness.
+The pre-existing Bride micro-qualification material contains provisional candidate labels, but those labels are not Frankenstein v0.2 promotion decisions. The current `src/bride` harness requires the same donor to pass against the frozen real Frankenstein adapter, followed by held-out, ablation, restart, replay, and applicable renderer tests. No cognitive donor is trunk-promoted at this stage. No result in this repository should be interpreted as human-subject evidence or a claim that a mechanism creates consciousness.
 
 ## The core research rule
 
@@ -87,19 +87,19 @@ v0.2 candidate trunk
 
 | Candidate | Source lineage | Current verdict | Reason |
 | --- | --- | --- | --- |
-| Bounded endogenous planning | DUCK v0.9 | **PROMOTE after full CI** | Baseline has goals but not endogenous goal gating, alternative routes, hierarchical steps, or outcome-driven replanning. Challenger converts route failure and multi-step completion from baseline absence to deterministic success while remaining serializable and terminating. |
-| Bounded inner-ear feedback | Jelly-Psiduck plus FirstPersonLoop | **PROMOTE after full CI** | Private cognition can alter later attention and bounded affect without acquiring world or belief authority. |
-| First-person perception filter | TinyPersonaEngine | **QUALIFY ADAPTER** | FOV, range, occlusion, and attention filtering improve raw-stimulus access, but this belongs at the host/perception boundary rather than inside world authority. |
-| Selective recall modes | Pretorius V6 plus Kiki provenance rules | **PROMOTE after full CI** | Actor-specific recall and provenance-collision precision improve over generic relevance. A first challenger failed when reconstruction outranked lived memory; the corrected candidate now penalizes non-lived evidence and passes the frozen test. |
-| Generic state-to-policy bridge | The-Doctor-Lives | **REJECT** | Frankenstein v0.1 already connects needs, relationships, affect, goals, concerns, and habits to the single DecisionEngine. Duplicating the bridge adds no measured capability. |
-| Contextual recurrent/plastic policy | The-Doctor-Lives plus Pretorius-Neural-Network plus Gelatinblob | **HOLD** | Context-conditioned learning beats the baseline-style global habit in the frozen opposite-context task, but complexity cost is above the automatic promotion threshold. It needs longer stability, lesion, rollback, and replay trials. |
+| Bounded endogenous planning | DUCK v0.9 | **REAL BASELINE QUALIFICATION PENDING** | Baseline has goals but not endogenous goal gating, alternative routes, hierarchical steps, or outcome-driven replanning. Challenger converts route failure and multi-step completion from baseline absence to deterministic success while remaining serializable and terminating. |
+| Bounded inner-ear feedback | Jelly-Psiduck plus FirstPersonLoop | **REAL BASELINE QUALIFICATION PENDING** | Private cognition can alter later attention and bounded affect without acquiring world or belief authority. |
+| First-person perception filter | TinyPersonaEngine | **REAL BASELINE QUALIFICATION PENDING** | FOV, range, occlusion, and attention filtering improve raw-stimulus access, but this belongs at the host/perception boundary rather than inside world authority. |
+| Selective recall modes | Pretorius V6 plus Kiki provenance rules | **REAL BASELINE QUALIFICATION PENDING** | Actor-specific recall and provenance-collision precision improve over generic relevance. A first challenger failed when reconstruction outranked lived memory; the corrected candidate now penalizes non-lived evidence and passes the frozen test. |
+| Generic state-to-policy bridge | The-Doctor-Lives | **MICRO RESULT: REJECT; REAL BASELINE RECONCILIATION PENDING** | Frankenstein v0.1 already connects needs, relationships, affect, goals, concerns, and habits to the single DecisionEngine. Duplicating the bridge adds no measured capability. |
+| Contextual recurrent/plastic policy | The-Doctor-Lives plus Pretorius-Neural-Network plus Gelatinblob | **MICRO RESULT: HOLD; REAL BASELINE RECONCILIATION PENDING** | Context-conditioned learning beats the baseline-style global habit in the frozen opposite-context task, but complexity cost is above the automatic promotion threshold. It needs longer stability, lesion, rollback, and replay trials. |
 | Subjective Frame receipt | Kiki-Mind plus Wayfarer | **PROMOTE INFRASTRUCTURE** | Deterministically binds a renderer view to ledger head, retrieval policy, selected source IDs, omissions, budget, and adapter version. This improves attribution, not cognition. |
-| Bounded offscreen catch-up | Persona-and-Jelly-Sandwich plus rho and Anima | **PROMOTE after full CI** | Adds explicit wall-clock catch-up with tick caps and retained fractional time rather than requiring manual time advancement. Host time remains authoritative. |
-| Activation-space affect steering | npc-steering-plus | **BLOCKED** | Donor evidence shows a strong state-tracking improvement over card-only but only a small distinctness increase. Bride lacks a compatible live activation-steering backend in deterministic CI, so it cannot enter trunk yet. |
-| Six-dimensional affect | Omnicore | **HOLD** | Bride has no frozen longitudinal failure that requires dominance, agency, fidelity, or novelty beyond current valence, arousal, and tension. More dimensions are not accepted as progress by themselves. |
+| Bounded offscreen catch-up | Persona-and-Jelly-Sandwich plus rho and Anima | **REAL BASELINE QUALIFICATION PENDING** | Adds explicit wall-clock catch-up with tick caps and retained fractional time rather than requiring manual time advancement. Host time remains authoritative. |
+| Activation-space affect steering | npc-steering-plus | **BLOCKED PENDING COMPATIBLE LIVE-MODEL REPRODUCTION** | Donor evidence shows a strong state-tracking improvement over card-only but only a small distinctness increase. Bride lacks a compatible live activation-steering backend in deterministic CI, so it cannot enter trunk yet. |
+| Six-dimensional affect | Omnicore | **MICRO RESULT: HOLD; REAL BASELINE RECONCILIATION PENDING** | Bride has no frozen longitudinal failure that requires dominance, agency, fidelity, or novelty beyond current valence, arousal, and tension. More dimensions are not accepted as progress by themselves. |
 | Renderer-swap benchmark | Wayfarer | **PROMOTE INFRASTRUCTURE** | Frozen-history semantic comparisons and blinded provider packs are the correct way to test renderer independence without confusing prose difference with identity change. |
 
-The machine-readable current result is `docs/qualification-results.json`. `docs/PROMOTION_LEDGER.md` is the permanent human-readable verdict history. A later better candidate does not delete an earlier rejection.
+`docs/PROMOTION_LEDGER.md` preserves the earlier deterministic micro-qualification as provisional evidence. Machine-readable real-baseline evidence will be generated only after `src/bride/frankenstein_adapter.py` runs the frozen cases in CI. A later stronger result does not delete an earlier rejection or null result.
 
 ## Donor history and research legacy
 
@@ -229,9 +229,9 @@ Replacement therefore means measured default selection, not deletion of history.
 
 ## Repository layout
 
-The inherited `src/frankenstein/` package is the frozen champion code until a promotion commit deliberately changes it. `src/bride_lab/` contains challenger mechanisms and qualification infrastructure. `tests/test_bride_lab.py` tests each mechanism independently. `tests/test_bride_integration_contract.py` verifies that the copied Frankenstein baseline remains present and that blocked or held mechanisms cannot be silently treated as promoted. The `docs/` directory stores the donor registry, experiment protocol, research timeline, promotion ledger, and machine-readable qualification results.
+The inherited `src/frankenstein/` package is the frozen champion code until a promotion commit deliberately changes it. `src/bride/` contains challenger mechanisms, matched-fork qualification infrastructure, the real Frankenstein adapter, and the donor registry. `tests/test_bride_mechanisms.py`, `tests/test_bride_qualification.py`, `tests/test_bride_registry.py`, and `tests/test_bride_real_adapter.py` cover the lab. The `docs/` directory stores donor provenance, experiment protocol, research timeline, recovered chat-only history, experiment ledger, and provisional promotion history.
 
-Once full GitHub CI is green, promotion work will move qualified mechanisms from `bride_lab` into versioned `frankenstein` production interfaces one at a time. Each promotion will have its own regression and ablation tests.
+Only after real-baseline qualification, held-out checks, and the applicable longitudinal gates are green may a mechanism move from `bride` into a versioned `frankenstein` production interface. Each promotion receives its own integration patch, regression run, and ablation rerun.
 
 ## Commands
 
@@ -239,14 +239,14 @@ Once full GitHub CI is green, promotion work will move qualified mechanisms from
 python -m pip install -e . pytest
 pytest -q
 python -m frankenstein eval
-python -m bride_lab
+bride-qualify list
 ```
 
-`python -m bride_lab` emits the current machine-readable qualification verdicts. CI must run both the inherited Frankenstein acceptance harness and the Bride harness.
+`bride-qualify list` shows the donor registry. Individual deterministic comparisons use `bride-qualify run <mechanism_id>`, and the real champion comparison adds `--real-frankenstein`. CI runs the inherited Frankenstein acceptance harness plus Bride tests and selected real-adapter cases.
 
 ## Current local qualification evidence
 
-The standalone Bride challenger package currently has 9 passing mechanism tests. The micro-harness currently classifies the eleven evaluated mechanisms as four promotions, two infrastructure promotions, one qualified adapter, two holds, one blocked live-model candidate, and one rejection. This is local Tier A evidence for the challenger package only. The inherited Frankenstein suite and Bride integration tests must run in GitHub CI before these promotions are allowed to modify the copied production kernel.
+Before publication of the real adapter, the new `src/bride` harness and mechanism layer passed 13 local self-tests. Those tests verify the evaluator and mechanism-local invariants only. They are Tier 0 harness evidence, not donor superiority evidence. Real Tier 1 evidence begins only when `tests/test_bride_real_adapter.py` and `bride-qualify ... --real-frankenstein` run against the frozen copied Frankenstein engine in GitHub CI.
 
 The first meaningful correction loop has already occurred. Pretorius selective recall failed its first frozen benchmark because a high-salience reconstructed negative memory could outrank the lived actor-specific record. The candidate was corrected by adding an epistemic penalty to non-lived material, with a stronger confidence-check penalty. The frozen benchmark then passed. This correction is evidence that the harness is capable of rejecting a plausible mechanism rather than simply ratifying donor ideas.
 
