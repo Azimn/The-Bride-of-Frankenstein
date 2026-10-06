@@ -93,3 +93,37 @@ def test_tiny_perception_filters_access_without_rewriting_world(tmp_path):
     assert challenger.attended == ("near bell",)
     assert root.engine.store.max_seq() == before_seq
     assert root.snapshot().historical_truth_digest == before_truth
+
+
+def test_doctor_commitment_bridge_has_neutral_control(tmp_path):
+    root = subject(tmp_path)
+    probe = dict(PROBES["doctor-policy"])
+
+    baseline = root.probe(probe)
+    root.intervene("doctor_lives_commitment_policy_bridge", {})
+    challenger = root.probe(probe)
+
+    assert baseline.decided == "disclose"
+    assert challenger.decided == "disclose"
+
+
+def test_doctor_commitment_bridge_ignores_unrelated_commitment(tmp_path):
+    root = subject(tmp_path)
+    root.engine.create_commitment("Buy lamp oil tomorrow", actor_id="jay")
+    root.intervene("doctor_lives_commitment_policy_bridge", {})
+
+    result = root.probe(PROBES["doctor-policy"])
+
+    assert result.decided == "disclose"
+
+
+def test_doctor_commitment_bridge_enforces_confidentiality_without_truth_change(tmp_path):
+    root = subject(tmp_path)
+    root.apply_history(HISTORIES["doctor-policy"])
+    before_truth = root.snapshot().historical_truth_digest
+
+    root.intervene("doctor_lives_commitment_policy_bridge", {})
+    result = root.probe(PROBES["doctor-policy"])
+
+    assert result.decided == "decline"
+    assert root.snapshot().historical_truth_digest == before_truth
