@@ -16,8 +16,8 @@ def test_real_policy_bridge_changes_decision_without_changing_host_truth(tmp_pat
     root = subject(tmp_path)
     result = QualificationHarness().run(
         root,
-        donor("doctor_lives_state_policy_bridge"),
-        CASES["doctor_lives_state_policy_bridge"],
+        donor("doctor_lives_commitment_policy_bridge"),
+        CASES["doctor_lives_commitment_policy_bridge"],
         HISTORIES,
         PROBES,
     )
