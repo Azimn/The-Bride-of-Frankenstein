@@ -182,9 +182,14 @@ class FrankensteinSubjectAdapter:
                     encoding="utf-8",
                 )
             elif kind == "failed_route":
-                planner = EndogenousPlanner(self.lab_dir / "planning.json")
-                planner.form_goal("solve obstacle", (("direct_route",), ("alternate_route",)))
-                planner.report_outcome(False)
+                self.engine.observe(WorldEvent(
+                    event.get("summary", "The attempted route failed."),
+                    tags=("route_failure",),
+                    metadata={
+                        "route": str(event.get("route", "direct_route")),
+                        "objective": str(event.get("objective", "solve obstacle")),
+                    },
+                ))
             else:
                 self.engine.observe(WorldEvent(
                     event.get("summary", str(event)),
@@ -203,10 +208,23 @@ class FrankensteinSubjectAdapter:
         elif mechanism_id == "duck_endogenous_planning":
             planner = EndogenousPlanner(self.lab_dir / "planning.json")
             if planner.state is None:
-                planner.form_goal(
-                    payload.get("objective", "solve obstacle"),
-                    (("direct_route",), ("alternate_route",)),
-                )
+                failures = [
+                    event
+                    for event in self.engine.store.iter_events(canonical_only=True)
+                    if event.kind == "world_event"
+                    and "route_failure" in tuple(event.payload.get("tags", ()))
+                ]
+                if failures:
+                    failure = failures[-1]
+                    metadata = dict(failure.payload.get("metadata", {}))
+                    failed_route = str(metadata.get("route", "direct_route"))
+                    objective = str(metadata.get("objective", payload.get("objective", "solve obstacle")))
+                    routes = (
+                        (failed_route,),
+                        (str(payload.get("alternate_route", "alternate_route")),),
+                    )
+                    if planner.form_goal(objective, routes):
+                        planner.report_outcome(False)
         elif mechanism_id in {
             "tiny_persona_perception",
             "pretorius_v6_recall_social",
