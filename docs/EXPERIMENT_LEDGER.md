@@ -122,6 +122,34 @@ Added tests cover:
 
 These tests are stage-two evidence. They reduce overfitting risk but do not substitute for integrated long-horizon evaluation.
 
-## Next experiment
+## BQ-008: Jelly concern-to-policy production bridge
 
-BQ-008 will build the Jelly concern-to-policy production bridge using the existing `DecisionEngine`. If green, a separate `candidate/v0.2-qualified-integrations` branch can integrate qualified mechanisms into `src/frankenstein/` one at a time while preserving ablation paths and rerunning the full cross-platform and longitudinal gates.
+Status: **COMPLETE**
+
+Bridge head: `5ce9df0e740cfbb8ffb1c1f8658cdefa61bfcd3a`
+
+GitHub Actions donor-qualification run: `37424276411`, SUCCESS.
+
+Matrix: Linux, Windows, and macOS on Python 3.11 and 3.13. All six qualification jobs completed successfully.
+
+Purpose: connect only concerns admitted through the bounded private-cognition pathway to ordinary action competition without turning private thought into action authority.
+
+Result:
+- raw private thought remains noncanonical,
+- admitted private concern remains explicitly uncertain and capped,
+- only private-cognition concerns receive the Jelly policy bridge,
+- ordinary Frankenstein concerns are an ablation control and receive no Jelly-specific pressure,
+- concern pressure adjusts candidate utility only,
+- the existing Frankenstein `DecisionEngine` remains the sole deliberate selector,
+- stronger homeostatic pressure can defeat reflection,
+- restart persistence, telemetry rejection, fabricated-fact containment, duplicate suppression, and ordinary-concern ablation are green.
+
+Verdict: **ADVANCE TO INTEGRATION CANDIDATE**
+
+## Donor-qualification freeze
+
+Status: **COMPLETE**
+
+The four behavioral production candidates are now bounded DUCK planning, the narrow Doctor-Lives confidentiality commitment bridge, bounded Jelly concern pressure, and the FirstPersonLoop involuntary-expression boundary. TinyPersona perception remains `ADAPTER_ONLY`.
+
+The next graph phase is integration, not further donor accumulation. Production work moves to `candidate/v0.2-qualified-integrations`, where each winner enters `src/frankenstein/` separately with the previous behavior retained as an ablation and the complete Bride and Frankenstein gates rerun after every integration.
