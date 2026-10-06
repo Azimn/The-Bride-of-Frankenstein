@@ -118,3 +118,43 @@ Evidence:
 Verdict: **ACCEPT AS v0.2 CANDIDATE DEFAULT**
 
 Next slice: separate involuntary-expression channel.
+
+
+## Integration Slice 4: involuntary-expression boundary
+
+Status: **GREEN**
+
+Integration head: `f61e5a0bc65b6cc7651fba2b666214c6f40edd1b`
+
+Regression workflow: `37426924967`
+
+Bride qualification workflow: `37426924976`
+
+Evidence:
+- 9/9 regression jobs passed across Linux, Windows, and macOS on Python 3.11, 3.12, and 3.13.
+- 6/6 Bride qualification jobs passed across Linux, Windows, and macOS on Python 3.11 and 3.13.
+- The integrated suite now executes 144 deterministic tests plus the 15-probe Frankenstein acceptance harness.
+- Neutral pain/surprise state emits no reflex.
+- High pain produces a qualitative non-intentional pain-vocalization emission.
+- Held-out extreme surprise produces a qualitative non-intentional startle emission.
+- Raw numeric pain and surprise values are not exposed in the emission object.
+- Reflex evaluation appends no canonical or noncanonical event.
+- Reflex evaluation does not create subject actions, memories, beliefs, commitments, goals, or concerns.
+- Reflex evaluation does not change deliberate `DecisionReceipt` selection.
+- Simultaneous extreme triggers resolve deterministically without creating a second policy selector.
+
+Verdict: **ACCEPT AS v0.2 CANDIDATE DEFAULT**
+
+## Qualified-core integration freeze
+
+Status: **COMPLETE**
+
+The v0.2 candidate core now contains exactly four behaviorally qualified additions over Frankenstein v0.1:
+1. bounded replayable planning,
+2. narrow confidentiality commitment pressure,
+3. bounded private-cognition concern pressure,
+4. a separate involuntary-expression channel.
+
+TinyPersona perception remains an external adapter rather than core world authority. Donors held, rejected, blocked, or infrastructure-only in the Bride promotion ledger remain outside the production core.
+
+The next phase is integrated longitudinal qualification, not additional donor accumulation.
