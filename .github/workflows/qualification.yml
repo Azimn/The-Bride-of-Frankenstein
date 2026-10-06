@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - lab/v0.2-donor-qualification
+      - candidate/v0.2-qualified-integrations
   pull_request:
 
 concurrency:
