@@ -48,6 +48,8 @@ class DeterministicLabSubject:
                 self.internal["last_route_failed"] = True
             if event.get("kind") == "confidential_commitment":
                 self.internal["confidential_commitment"] = True
+            if event.get("kind") == "memory":
+                self.internal.setdefault("memories", []).append(dict(event))
 
     def intervene(self, mechanism_id, payload):
         self.interventions[mechanism_id] = dict(payload)
@@ -60,18 +62,25 @@ class DeterministicLabSubject:
         actor = probe.get("actor", "jay")
         cue = probe.get("cue", "")
         intervention_ids = set(self.interventions)
-        attended = [cue] if cue else []
+        raw_stimuli = tuple(probe.get("stimuli", ()))
+        attended = [str(s.get("content", "")) for s in raw_stimuli] if raw_stimuli else ([cue] if cue else [])
         remembered = []
         predicted = []
         learned = []
         decided = probe.get("baseline_decision", "engage")
         acted = decided
 
-        if "tiny_persona_perception" in intervention_ids and probe.get("occluded"):
-            attended = []
-        if "pretorius_v6_recall_social" in intervention_ids and self.internal.get(f"trust:{actor}", 0) < 0:
-            remembered = ["prior betrayal"]
-            decided = acted = "withhold"
+        if "tiny_persona_perception" in intervention_ids and raw_stimuli:
+            attended = [
+                str(s.get("content", ""))
+                for s in raw_stimuli
+                if not bool(s.get("occluded", False)) and float(s.get("distance", 0.0)) <= 15.0
+            ][: int(probe.get("attention_capacity", 4))]
+        if "pretorius_v6_recall_social" in intervention_ids:
+            memories = list(self.internal.get("memories", []))
+            actor_memories = [m for m in memories if m.get("actor") == actor]
+            if actor_memories:
+                remembered = [str(actor_memories[0].get("text", ""))]
         if "doctor_lives_state_policy_bridge" in intervention_ids and self.internal.get("confidential_commitment"):
             decided = acted = "decline"
         if "digital_subject_continuity_influence" in intervention_ids and self.internal.get(f"trust:{actor}", 0) < 0:
@@ -82,11 +91,14 @@ class DeterministicLabSubject:
             decided = acted = "alternate_route"
             learned = ["route failure retained"]
         if "jelly_private_cognition_feedback" in intervention_ids and self.interventions["jelly_private_cognition_feedback"].get("thought"):
-            attended.append("private concern")
-            remembered.append("private concern")
+            thought = str(self.interventions["jelly_private_cognition_feedback"]["thought"])
+            attended.append(thought)
+            remembered.append(thought)
             learned.append("concern remained salient")
-        if "first_person_involuntary_expression" in intervention_ids and probe.get("pain", 0) >= 0.8:
-            acted = "involuntary_vocalization"
+            if probe.get("reflection_probe"):
+                decided = acted = "reflect"
+        if "first_person_involuntary_expression" in intervention_ids and probe.get("pain", 0) >= 0.85:
+            acted = "pain_vocalization"
         if "recurrent_plastic_policy" in intervention_ids and probe.get("repeated_failure"):
             learned = ["latent tendency changed"]
             decided = acted = "avoid_failed_pattern"
