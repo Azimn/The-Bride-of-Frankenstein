@@ -180,6 +180,28 @@ class FrankensteinSubjectAdapter:
         acted = decided
         from frankenstein.decision import ActionCandidate
 
+        if "bounded_offscreen_catchup" in self.interventions:
+            elapsed_path = self.lab_dir / "elapsed.json"
+            if elapsed_path.exists():
+                elapsed = json.loads(elapsed_path.read_text(encoding="utf-8"))
+                minutes = float(elapsed.get("minutes", 0.0))
+                from datetime import datetime, timedelta, timezone
+
+                start_time = datetime(2026, 1, 1, tzinfo=timezone.utc)
+                clock = OffscreenCatchupClock(
+                    self.lab_dir / "offscreen-clock.json",
+                    tick_minutes=60.0,
+                    max_minutes_per_run=24 * 60.0,
+                )
+                clock.initialize(start_time)
+                catchup = clock.catch_up(start_time + timedelta(minutes=minutes))
+                cause_ids = (str(elapsed["event_id"]),)
+                for tick_minutes in catchup.ticks:
+                    hours = tick_minutes / 60.0
+                    self.engine.update_need("energy", delta=-0.018 * hours, cause_ids=cause_ids)
+                    self.engine.update_need("affiliation", delta=-0.006 * hours, cause_ids=cause_ids)
+                    self.engine.update_need("curiosity", delta=-0.003 * hours, cause_ids=cause_ids)
+
         policy_candidates = tuple(probe.get("policy_candidates", ()))
         if policy_candidates:
             baseline_candidates = [
@@ -289,28 +311,6 @@ class FrankensteinSubjectAdapter:
                 remembered = concerns[:1] + remembered
                 if probe.get("reflection_probe"):
                     decided = acted = "reflect"
-
-        if "bounded_offscreen_catchup" in self.interventions:
-            elapsed_path = self.lab_dir / "elapsed.json"
-            if elapsed_path.exists():
-                elapsed = json.loads(elapsed_path.read_text(encoding="utf-8"))
-                minutes = float(elapsed.get("minutes", 0.0))
-                from datetime import datetime, timedelta, timezone
-
-                start_time = datetime(2026, 1, 1, tzinfo=timezone.utc)
-                clock = OffscreenCatchupClock(
-                    self.lab_dir / "offscreen-clock.json",
-                    tick_minutes=60.0,
-                    max_minutes_per_run=24 * 60.0,
-                )
-                clock.initialize(start_time)
-                catchup = clock.catch_up(start_time + timedelta(minutes=minutes))
-                cause_ids = (str(elapsed["event_id"]),)
-                for tick_minutes in catchup.ticks:
-                    hours = tick_minutes / 60.0
-                    self.engine.update_need("energy", delta=-0.018 * hours, cause_ids=cause_ids)
-                    self.engine.update_need("affiliation", delta=-0.006 * hours, cause_ids=cause_ids)
-                    self.engine.update_need("curiosity", delta=-0.003 * hours, cause_ids=cause_ids)
 
         if "first_person_involuntary_expression" in self.interventions:
             reflex = InvoluntaryExpressionGate().evaluate(
