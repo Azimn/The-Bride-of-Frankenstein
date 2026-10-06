@@ -339,21 +339,50 @@ class SQLiteStore:
             conn.execute("INSERT INTO meta(key,value) VALUES('projection_cursor',?) ON CONFLICT(key) DO UPDATE SET value=excluded.value", (str(seq),))
 
     def projection_digest(self) -> str:
-        """Digest causal projection state only. Retrieval telemetry is intentionally excluded.
+        """Digest causal projection state independently of SQLite insertion order.
 
-        access_count and last_accessed are cache/observability metadata. They do not currently
-        affect decisions, so replay does not need to reproduce them. If that changes, they must
-        move behind canonical retrieval events before they are allowed into this digest.
+        Retrieval telemetry is intentionally excluded. Projection tables are normalized by
+        row content rather than rowid so a replay that reconstructs the same causal state
+        produces the same digest even when SQLite assigns different physical row order.
         """
-        tables = ["needs", "affect", "relationships", "beliefs", "commitments", "expectations", "goals", "concerns", "habits", "memory_edges", "runtime_state"]
+        tables = [
+            "needs",
+            "affect",
+            "relationships",
+            "beliefs",
+            "commitments",
+            "expectations",
+            "goals",
+            "concerns",
+            "habits",
+            "memory_edges",
+            "runtime_state",
+        ]
         snapshot: dict[str, Any] = {}
         with self.connect() as conn:
             for table in tables:
-                rows = conn.execute(f"SELECT * FROM {table} ORDER BY rowid").fetchall()
-                snapshot[table] = [{k: row[k] for k in row.keys()} for row in rows]
-            rows = conn.execute("SELECT memory_id,kind,actor_id,text,tags_json,salience,valence,arousal,created_at,source_event_id FROM memories ORDER BY rowid").fetchall()
-            snapshot["memories"] = [{k: row[k] for k in row.keys()} for row in rows]
-        return hashlib.sha256(stable_json(snapshot).encode("utf-8")).hexdigest()
+                rows = conn.execute(f"SELECT * FROM {table}").fetchall()
+                normalized = [
+                    {k: row[k] for k in row.keys()}
+                    for row in rows
+                ]
+                normalized.sort(key=stable_json)
+                snapshot[table] = normalized
+
+            rows = conn.execute(
+                "SELECT memory_id,kind,actor_id,text,tags_json,salience,valence,"
+                "arousal,created_at,source_event_id FROM memories"
+            ).fetchall()
+            memories = [
+                {k: row[k] for k in row.keys()}
+                for row in rows
+            ]
+            memories.sort(key=stable_json)
+            snapshot["memories"] = memories
+
+        return hashlib.sha256(
+            stable_json(snapshot).encode("utf-8")
+        ).hexdigest()
 
     def backup_to(self, target: str | Path) -> Path:
         target = Path(target)
