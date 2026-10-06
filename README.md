@@ -20,7 +20,7 @@ Integrated longitudinal evidence passed nine deterministic whole-system trials o
 
 Release hardening at candidate head `31f727afe6918e05b1deb508d09fd99cb042e36d` passed regression workflow `37516915821` and Bride qualification workflow `37516915930`. Hardening verifies v0.1-shaped homes open without a schema migration, legacy backup manifests restore, v0.2 backups verify a portable semantic projection digest, qualified v0.2 state survives backup/restore, and involuntary expression remains transient.
 
-This branch is versioned `0.2.0rc1`. No held, rejected, blocked, adapter-only, or infrastructure-only donor was silently moved into the production core. No result here is a claim about phenomenal consciousness.
+This branch is versioned `0.2.0rc1`. Release head `9ad66a5943518cece4ebb27e207871fce8e4fbfa` passed regression workflow `37518089330` and Bride qualification workflow `37518089557` across the complete release matrices. RC1 is accepted for merge to Bride `main`. No held, rejected, blocked, adapter-only, or infrastructure-only donor was silently moved into the production core. No result here is a claim about phenomenal consciousness.
 
 ## The core research rule
 
@@ -313,7 +313,7 @@ The same restraint applies to negative results. A null lesion does not prove a m
 
 The donor qualification and Bride-side v0.2 integration work is complete for this release candidate. The current task is release acceptance, not further donor accumulation.
 
-`release/v0.2-rc1` must pass the complete regression and Bride qualification matrices with the package version fixed at `0.2.0rc1`. The RC may then be merged into Bride `main` as the accepted laboratory and reference implementation for the qualified v0.2 architecture.
+`release/v0.2-rc1` has passed the complete regression and Bride qualification matrices with the package version fixed at `0.2.0rc1`. RC1 is accepted for merge into Bride `main`. After merge, `main` must pass both workflows independently before the update is closed.
 
 Promotion back to the original `Azimn/Frankenstein` production repository is a separate controlled step. It should carry the exact qualified core, the ablation paths, the release evidence, and the compatibility tests rather than reimplementing the mechanisms from prose.
 

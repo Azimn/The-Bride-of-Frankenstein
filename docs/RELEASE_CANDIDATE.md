@@ -1,6 +1,6 @@
 # Frankenstein v0.2.0rc1 Release Candidate
 
-Status: **RC ACCEPTANCE PENDING RELEASE-BRANCH CI**
+Status: **ACCEPTED RC1, PENDING MERGE TO MAIN**
 
 Release branch: `release/v0.2-rc1`
 
@@ -41,13 +41,21 @@ New backups include both the legacy projection digest and the semantic projectio
 
 ## Final RC gate
 
-The release branch must independently pass:
+Release head: `9ad66a5943518cece4ebb27e207871fce8e4fbfa`
 
-- the 9-job regression matrix,
-- the 6-job Bride qualification matrix,
-- the 15-probe Frankenstein acceptance harness,
-- the nine integrated longitudinal trials,
-- the eight 32-turn repeated-interaction stress trials,
-- the v0.1 compatibility and backup/restore suite.
+Regression workflow: `37518089330`, **SUCCESS**
 
-RC1 is not accepted until those release-branch checks are green.
+Bride qualification workflow: `37518089557`, **SUCCESS**
+
+Acceptance evidence:
+- 9/9 regression jobs passed across Linux, Windows, and macOS on Python 3.11, 3.12, and 3.13.
+- 6/6 Bride qualification jobs passed across Linux, Windows, and macOS on Python 3.11 and 3.13.
+- the 15-probe Frankenstein acceptance harness passed,
+- all nine integrated longitudinal trials passed,
+- all eight 32-turn repeated-interaction stress trials passed,
+- the v0.1 compatibility and backup/restore suite passed,
+- package and runtime versions both report `0.2.0rc1`.
+
+Verdict: **ACCEPT RC1 FOR MERGE TO BRIDE MAIN**
+
+After merge, `main` must independently pass both workflows before this update is considered complete.

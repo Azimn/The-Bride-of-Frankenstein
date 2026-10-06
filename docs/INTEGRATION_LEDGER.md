@@ -231,3 +231,22 @@ Evidence:
 - involuntary expression remains transient across backup/restore.
 
 Verdict: **ADVANCE TO v0.2.0rc1**
+
+
+## v0.2.0rc1 Release-Branch Acceptance
+
+Status: **GREEN**
+
+Release head: `9ad66a5943518cece4ebb27e207871fce8e4fbfa`
+
+Regression workflow: `37518089330`
+
+Bride qualification workflow: `37518089557`
+
+Evidence:
+- 9/9 release-branch regression jobs passed.
+- 6/6 release-branch Bride qualification jobs passed.
+- RC package and runtime versions agree at `0.2.0rc1`.
+- integrated longitudinal, repeated-interaction stress, v0.1 compatibility, legacy restore, and semantic backup verification all execute on the release branch.
+
+Verdict: **ACCEPT RC1 FOR MERGE TO MAIN**
