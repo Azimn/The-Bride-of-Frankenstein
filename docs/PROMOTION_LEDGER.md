@@ -1,6 +1,6 @@
 # Promotion Ledger
 
-This ledger mirrors the current deterministic Bride micro-qualification. The README is the architecture authority.
+This ledger mirrors the earlier deterministic Bride micro-qualification. The README is the architecture authority. These labels are provisional experiment results, not Frankenstein v0.2 trunk promotions. A behavioral donor must still pass the current real Frankenstein adapter, held-out cases, ablation, persistence, replay, and applicable renderer gates before integration.
 
 | Mechanism | Donor lineage | Current verdict | Baseline | Challenger | Complexity | Reason |
 | --- | --- | --- | ---: | ---: | ---: | --- |
