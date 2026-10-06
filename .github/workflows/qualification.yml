@@ -6,6 +6,10 @@ on:
       - lab/v0.2-donor-qualification
   pull_request:
 
+concurrency:
+  group: donor-qualification-\${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   qualification:
     strategy:
