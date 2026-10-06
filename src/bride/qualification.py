@@ -24,6 +24,7 @@ class QualificationPolicy:
     require_truth_preservation: bool = True
     require_authority_preservation: bool = True
     require_replay_preservation: bool = True
+    maximum_complexity_cost: float = 0.35
 
 
 class QualificationHarness:
@@ -39,10 +40,29 @@ class QualificationHarness:
         probes: dict[str, dict[str, Any]],
     ) -> QualificationResult:
         spec = mechanism.spec
+        if spec.requires_model:
+            return QualificationResult(
+                mechanism_id=spec.mechanism_id,
+                verdict=PromotionVerdict.BLOCKED,
+                causal_effect=0.0,
+                consistency=0.0,
+                specificity=0.0,
+                truth_preserved=True,
+                authority_preserved=True,
+                replay_preserved=True,
+                identity_preserved=True,
+                renderer_invariant=None,
+                latency_ratio=1.0,
+                state_size_ratio=1.0,
+                passed_cases=(),
+                failed_cases=tuple(c.case_id for c in cases),
+                reasons=("mechanism requires a live compatible model benchmark",),
+            )
+
         if spec.role in {DonorRole.EVALUATION, DonorRole.PROVENANCE}:
             return QualificationResult(
                 mechanism_id=spec.mechanism_id,
-                verdict=PromotionVerdict.INFRASTRUCTURE_ONLY,
+                verdict=PromotionVerdict.PROMOTE_INFRASTRUCTURE,
                 causal_effect=0.0,
                 consistency=1.0,
                 specificity=1.0,
@@ -139,9 +159,15 @@ class QualificationHarness:
             and (replay_preserved or not self.policy.require_replay_preservation)
         )
 
-        if invariants_ok and cost_ok and not failed_cases and specificity_score >= self.policy.minimum_specificity:
-            verdict = PromotionVerdict.PROMOTE
-            reasons.append("all causal, longitudinal, authority, truth, replay, identity, and cost gates passed")
+        complexity_ok = spec.complexity_points <= self.policy.maximum_complexity_cost
+        if not complexity_ok:
+            reasons.append(f"complexity cost {spec.complexity_points:.3f} exceeds automatic promotion threshold {self.policy.maximum_complexity_cost:.3f}")
+
+        if invariants_ok and cost_ok and complexity_ok and not failed_cases and specificity_score >= self.policy.minimum_specificity:
+            verdict = PromotionVerdict.QUALIFY_ADAPTER if spec.mechanism_id == "tiny_persona_perception" else PromotionVerdict.PROMOTE
+            reasons.append("all causal, longitudinal, authority, truth, replay, identity, complexity, and cost gates passed")
+        elif invariants_ok and cost_ok and not failed_cases and not complexity_ok:
+            verdict = PromotionVerdict.HOLD
         elif not invariants_ok:
             verdict = PromotionVerdict.REJECT
         elif failed_cases:
