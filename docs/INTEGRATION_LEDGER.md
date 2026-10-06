@@ -182,3 +182,28 @@ Evidence:
 Verdict: **ADVANCE TO LONGER STRESS QUALIFICATION**
 
 This gate is stronger than isolated feature tests because the qualified mechanisms coexist in the same candidate and compete through the same action authority. It is still deterministic and bounded. Live-model renderer invariance and much longer histories remain separate gates.
+
+
+## Repeated-Interaction Stress Gate
+
+Status: **GREEN**
+
+Candidate evidence SHA: `e66d7e9ffe9312f82a0d5a95b0ce7b0506f6c551`
+
+Regression workflow: `37428534048`
+
+Bride qualification workflow: `37428534259`
+
+Frozen evidence: `evidence/REPEATED_INTERACTION_STRESS_SNAPSHOT_e66d7e9.md`
+
+Evidence:
+- 9/9 regression jobs passed.
+- 6/6 qualification jobs passed.
+- Six stress artifacts normalize to identical JSON.
+- Normalized full stress-result SHA-256: `54534a007a118178ca7262c7c31ffae3c570856bf488456a2d3c0a984afa1271`.
+- Normalized stress trial-payload SHA-256: `65831d7d9b6bb4b381c81da24558eb5c86de42d631d75b8206ad9e20d3eef967`.
+- Eight repeated-interaction trials passed everywhere: long-history replay/restart, multi-restart plans, commitment retention, private-thought loop suppression, renderer long-run drift, diagnostic-fork isolation, 130-memory cue specificity, and developmental long-run divergence.
+
+Verdict: **ADVANCE TO RELEASE HARDENING**
+
+The next graph phase is compatibility and release acceptance, not additional donor accumulation.
