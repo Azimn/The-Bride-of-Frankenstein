@@ -1,0 +1,29 @@
+name: donor-qualification
+
+on:
+  push:
+    branches:
+      - lab/v0.2-donor-qualification
+  pull_request:
+
+jobs:
+  qualification:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ["3.11", "3.13"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m pip install --upgrade pip
+      - run: python -m pip install -e . pytest
+      - run: pytest -q
+      - run: python -m frankenstein eval
+      - run: bride-qualify list
+      - run: bride-qualify run doctor_lives_state_policy_bridge --real-frankenstein
+      - run: bride-qualify run tiny_persona_perception --real-frankenstein
+      - run: bride-qualify run jelly_private_cognition_feedback --real-frankenstein
