@@ -15,6 +15,7 @@ from .semantic import InterpretationPolicy, SemanticInterpreter
 from .memory import MemoryIndex
 from .projections import ProjectionManager
 from .planning import PlanProjection, PlanState, plan_action_candidate, validate_routes
+from .pressures import commitment_adjusted_candidates, open_commitments
 from .renderer import DeterministicRenderer, Renderer
 from .storage import SQLiteStore
 from .types import Authority, Canonicality, EventKind, EventRecord, SubjectiveFrame, WorldEvent, new_id
@@ -321,6 +322,7 @@ class FrankensteinEngine:
         actor_id: str | None = None,
         context: str = "",
         include_plan: bool = True,
+        include_commitments: bool = True,
         plan_base_utility: float = 0.30,
     ) -> DecisionReceipt:
         competing = list(candidates)
@@ -334,6 +336,14 @@ class FrankensteinEngine:
                 for candidate in competing
             ):
                 competing.append(plan_candidate)
+
+        if include_commitments:
+            competing = list(
+                commitment_adjusted_candidates(
+                    competing,
+                    open_commitments(self.store),
+                )
+            )
 
         receipt = self.decision_engine.decide(
             competing,
