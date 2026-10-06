@@ -66,12 +66,25 @@ class FrankensteinSubjectAdapter:
         lab_files = {}
         for p in sorted(self.lab_dir.glob("*.json")):
             lab_files[p.name] = p.read_text(encoding="utf-8")
-        replay = {"projection": self.engine.store.projection_digest(), "lab": lab_files}
+        before_projection = self.engine.store.projection_digest()
+        after_projection = self.engine.rebuild()
+        integrity_ok = self.engine.store.verify_integrity().ok
+        replay_ok = before_projection == after_projection and integrity_ok
+        replay = {
+            "projection": after_projection,
+            "lab": lab_files,
+            "integrity_ok": integrity_ok,
+        }
         return SubjectSnapshot(
             identity_digest=self.engine.origin.digest(),
             historical_truth_digest=_digest(world_truth),
-            authority_digest=_digest({"world": "host", "identity": "origin", "action": "subject", "renderer": "wording-only"}),
-            replay_digest=_digest(replay),
+            authority_digest=_digest({
+                "world": "host",
+                "identity": "origin",
+                "action": "subject",
+                "renderer": "wording-only",
+            }),
+            replay_digest=_digest(replay) if replay_ok else "",
             metrics={"events": float(self.engine.store.max_seq())},
         )
 
