@@ -88,6 +88,7 @@ class QualificationCase:
     minimum_replicates: int = 3
     require_renderer_invariance: bool = False
     maximum_latency_ratio: float = 2.0
+    maximum_latency_delta_ms: float = 5.0
     maximum_state_size_ratio: float = 2.0
 
 
@@ -106,6 +107,9 @@ class QualificationResult:
     replay_preserved: bool
     identity_preserved: bool
     renderer_invariant: bool | None
+    baseline_latency_ms: float
+    challenger_latency_ms: float
+    latency_delta_ms: float
     latency_ratio: float
     state_size_ratio: float
     passed_cases: tuple[str, ...]
