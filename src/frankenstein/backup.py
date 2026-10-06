@@ -22,7 +22,9 @@ def create_backup(engine: FrankensteinEngine, target: str | Path) -> Path:
         manifest = {
             "origin_digest": engine.origin.digest(),
             "projection_digest": engine.store.projection_digest(),
+            "semantic_projection_digest": engine.store.semantic_projection_digest(),
             "event_count": engine.store.max_seq(),
+            "backup_format": 2,
         }
         (root / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
         with tarfile.open(target, "w:gz") as tf:
@@ -66,4 +68,11 @@ def restore_backup(archive: str | Path, destination: str | Path, *, force: bool 
     if engine.origin.digest() != manifest["origin_digest"]:
         raise ValueError("restored origin digest mismatch")
     engine.projections.rebuild()
+
+    expected_semantic = manifest.get("semantic_projection_digest")
+    if expected_semantic is not None:
+        actual_semantic = engine.store.semantic_projection_digest()
+        if actual_semantic != expected_semantic:
+            raise ValueError("restored semantic projection digest mismatch")
+
     return engine
