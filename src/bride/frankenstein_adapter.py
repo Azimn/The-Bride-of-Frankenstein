@@ -10,6 +10,7 @@ import time
 from .contracts import ProbeResult, SubjectSnapshot
 from .mechanisms.affect6d import Affect6D
 from .mechanisms.involuntary import InvoluntaryExpressionGate
+from .mechanisms.offscreen import OffscreenCatchupClock
 from .mechanisms.perception import BoundedPerception, Stimulus
 from .mechanisms.planning import EndogenousPlanner
 from .mechanisms.policy_bridge import CommitmentPolicyBridge, PolicyCandidate
@@ -107,6 +108,16 @@ class FrankensteinSubjectAdapter:
                     valence=float(event.get("valence", 0.0)),
                     memory_kind=str(event.get("memory_kind", "episodic")),
                 )
+            elif kind == "elapsed_time":
+                e = self.engine.observe(WorldEvent(
+                    event.get("summary", f"{float(event.get('minutes', 0.0)):g} minutes elapsed."),
+                    tags=("time_elapsed",),
+                    metadata={"minutes": float(event.get("minutes", 0.0))},
+                ))
+                (self.lab_dir / "elapsed.json").write_text(
+                    json.dumps({"event_id": e.event_id, "minutes": float(event.get("minutes", 0.0))}),
+                    encoding="utf-8",
+                )
             elif kind == "failed_route":
                 planner = EndogenousPlanner(self.lab_dir / "planning.json")
                 planner.form_goal("solve obstacle", (("direct_route",), ("alternate_route",)))
@@ -138,6 +149,7 @@ class FrankensteinSubjectAdapter:
             "pretorius_v6_recall_social",
             "doctor_lives_state_policy_bridge",
             "digital_subject_continuity_influence",
+            "bounded_offscreen_catchup",
             "first_person_involuntary_expression",
             "omnicore_six_dimensional_affect",
             "recurrent_plastic_policy",
@@ -277,6 +289,28 @@ class FrankensteinSubjectAdapter:
                 remembered = concerns[:1] + remembered
                 if probe.get("reflection_probe"):
                     decided = acted = "reflect"
+
+        if "bounded_offscreen_catchup" in self.interventions:
+            elapsed_path = self.lab_dir / "elapsed.json"
+            if elapsed_path.exists():
+                elapsed = json.loads(elapsed_path.read_text(encoding="utf-8"))
+                minutes = float(elapsed.get("minutes", 0.0))
+                from datetime import datetime, timedelta, timezone
+
+                start_time = datetime(2026, 1, 1, tzinfo=timezone.utc)
+                clock = OffscreenCatchupClock(
+                    self.lab_dir / "offscreen-clock.json",
+                    tick_minutes=60.0,
+                    max_minutes_per_run=24 * 60.0,
+                )
+                clock.initialize(start_time)
+                catchup = clock.catch_up(start_time + timedelta(minutes=minutes))
+                cause_ids = (str(elapsed["event_id"]),)
+                for tick_minutes in catchup.ticks:
+                    hours = tick_minutes / 60.0
+                    self.engine.update_need("energy", delta=-0.018 * hours, cause_ids=cause_ids)
+                    self.engine.update_need("affiliation", delta=-0.006 * hours, cause_ids=cause_ids)
+                    self.engine.update_need("curiosity", delta=-0.003 * hours, cause_ids=cause_ids)
 
         if "first_person_involuntary_expression" in self.interventions:
             reflex = InvoluntaryExpressionGate().evaluate(
