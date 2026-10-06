@@ -207,3 +207,27 @@ Evidence:
 Verdict: **ADVANCE TO RELEASE HARDENING**
 
 The next graph phase is compatibility and release acceptance, not additional donor accumulation.
+
+
+## Release Hardening Gate
+
+Status: **GREEN**
+
+Candidate hardening head: `31f727afe6918e05b1deb508d09fd99cb042e36d`
+
+Regression workflow: `37516915821`
+
+Bride qualification workflow: `37516915930`
+
+Evidence:
+- 9/9 regression jobs passed across Linux, Windows, and macOS on Python 3.11, 3.12, and 3.13.
+- 6/6 Bride qualification jobs passed across Linux, Windows, and macOS on Python 3.11 and 3.13.
+- v0.1-shaped homes open under v0.2 with schema version 1 and unchanged semantic state.
+- v0.1-shaped backups restore under the v0.2 runtime.
+- legacy v0.1-style backup manifests without the new semantic digest remain accepted.
+- v0.2 backups record and verify a portable semantic projection digest independent of SQLite row insertion order.
+- the legacy `projection_digest()` contract remains unchanged for backward compatibility.
+- qualified plan and private-cognition state survive backup/restore.
+- involuntary expression remains transient across backup/restore.
+
+Verdict: **ADVANCE TO v0.2.0rc1**

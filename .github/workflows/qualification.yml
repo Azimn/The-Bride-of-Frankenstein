@@ -5,6 +5,7 @@ on:
     branches:
       - lab/v0.2-donor-qualification
       - candidate/v0.2-qualified-integrations
+      - release/v0.2-rc1
   pull_request:
 
 concurrency:

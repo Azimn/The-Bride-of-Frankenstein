@@ -1,6 +1,6 @@
 # The Bride of Frankenstein
 
-## Controlled Frankenstein v0.2 Donor Qualification Laboratory
+## Frankenstein v0.2 Release Candidate and Controlled Donor Qualification Laboratory
 
 The Bride of Frankenstein is the controlled integration and qualification program for the next version of the Frankenstein persistent-character runtime. It begins from the accepted Frankenstein v0.1 production baseline and asks a deliberately adversarial question: which mechanisms from the preceding research program actually make a continuing character behave better over time, and which mechanisms merely make the architecture larger?
 
@@ -8,15 +8,19 @@ Bride is not a consciousness project and does not claim phenomenal experience. T
 
 This README is the single architecture authority, research history, design specification, production plan, promotion contract, and current status record. Supporting files in `docs/` preserve evidence and generated ledgers. When a supporting document conflicts with this README, this README wins unless a reviewed change updates both deliberately.
 
-## Current baseline and current lab status
+## Current baseline and release-candidate status
 
-The frozen champion is Frankenstein v0.1 at commit `fdaf5be89ccf6991a20eb54649d5318a9adcb6ff`. Bride's laboratory branch contains an exact copied baseline plus challenger and evidence code. The inherited `src/frankenstein/` package remains frozen during donor qualification.
+The frozen comparison champion remains Frankenstein v0.1 at commit `fdaf5be89ccf6991a20eb54649d5318a9adcb6ff`. Bride used that exact baseline to qualify donors before any production replacement was allowed.
 
-The first real-baseline qualification is complete. At evidence head `868dd0be6f1b332e826f0da399073d59baae6763`, GitHub Actions run `37422349002` executed the same real-Frankenstein suite on Linux, Windows, and macOS under Python 3.11 and 3.13. All six artifacts agree on every verdict. Their IDs and SHA-256 digests are frozen in `evidence/REAL_BASELINE_SNAPSHOT_868dd0b.md`.
+The v0.2 production candidate now contains exactly four behaviorally qualified core additions: bounded replayable planning, narrow confidentiality commitment pressure, bounded private-cognition concern pressure, and a separate involuntary-expression channel. TinyPersona perception remains an optional host adapter rather than a new owner of world truth.
 
-Four behavioral candidates advance from donor qualification to production-bridge work: DUCK bounded planning, bounded Jelly-Psiduck private-cognition feedback, a narrow The-Doctor-Lives confidentiality commitment-to-policy bridge, and the FirstPersonLoop involuntary-expression boundary. TinyPersona perception qualifies only as a host adapter. Pretorius selective recall and Digital Subject continuity influence are rejected as redundant in their frozen cases because Frankenstein already meets the preregistered target. Contextual plasticity, offscreen continuity, and Omnicore affect remain held for complexity, cost, or production-need reasons. Model-dependent steering and selective dual-process work remain blocked pending compatible reproduction.
+The donor-qualification, production-bridge, integration, longitudinal, repeated-interaction stress, and release-hardening gates are complete. The integrated candidate passed the 9-job regression matrix on Linux, Windows, and macOS under Python 3.11, 3.12, and 3.13, plus the 6-job Bride qualification matrix on all three operating systems under Python 3.11 and 3.13.
 
-A donor `PROMOTE` verdict does not mean direct trunk integration. The mechanism must still pass an architecture-preserving production bridge, integrated ablation, cross-platform regression, and applicable long-horizon or renderer tests. No result here is a claim about phenomenal consciousness.
+Integrated longitudinal evidence passed nine deterministic whole-system trials on every qualification platform. Repeated-interaction stress passed eight additional trials at a 32-turn horizon, including replay/restart, multi-restart planning, commitment retention, private-thought loop suppression, renderer-neutral semantic continuity, diagnostic-fork isolation, 130-memory cue specificity, and developmental divergence.
+
+Release hardening at candidate head `31f727afe6918e05b1deb508d09fd99cb042e36d` passed regression workflow `37516915821` and Bride qualification workflow `37516915930`. Hardening verifies v0.1-shaped homes open without a schema migration, legacy backup manifests restore, v0.2 backups verify a portable semantic projection digest, qualified v0.2 state survives backup/restore, and involuntary expression remains transient.
+
+This branch is versioned `0.2.0rc1`. No held, rejected, blocked, adapter-only, or infrastructure-only donor was silently moved into the production core. No result here is a claim about phenomenal consciousness.
 
 ## The core research rule
 
@@ -258,19 +262,26 @@ python -m pip install -e . pytest
 pytest -q
 python -m frankenstein eval
 bride-qualify list
+bride-qualify suite --real-frankenstein
+bride-qualify longitudinal
+bride-qualify stress --turns 32
 ```
 
-`bride-qualify list` shows the donor registry. Individual deterministic comparisons use `bride-qualify run <mechanism_id>`, and the real champion comparison adds `--real-frankenstein`. CI runs the inherited Frankenstein acceptance harness plus Bride tests and selected real-adapter cases.
+`bride-qualify list` shows the donor registry. `suite --real-frankenstein` reruns donor qualification against the executable Frankenstein package. `longitudinal` runs the nine integrated whole-system trials. `stress --turns 32` runs the eight repeated-interaction trials. CI publishes the machine-readable qualification, longitudinal, and stress JSON evidence for each qualification job.
 
-## Current local qualification evidence
+## Current verified evidence
 
-The authoritative deterministic evidence is no longer local-only. GitHub Actions run `37422349002` at `868dd0be6f1b332e826f0da399073d59baae6763` produced six agreeing real-baseline artifacts across Linux, Windows, macOS, Python 3.11, and Python 3.13.
+The original six-platform real-baseline qualification remains frozen at evidence head `868dd0be6f1b332e826f0da399073d59baae6763`. Its artifact IDs and digests are recorded in `evidence/REAL_BASELINE_SNAPSHOT_868dd0b.md`.
 
-The qualification harness records baseline quality, challenger quality, quality gain, causal effect, specificity, truth preservation, authority preservation, semantic replay, identity preservation, latency, state size, and verdict. A challenger cannot win merely by behaving differently. It must move toward a preregistered target.
+Four production integration slices subsequently passed both cross-platform matrices. Their exact heads and workflow runs are recorded in `docs/INTEGRATION_LEDGER.md`.
 
-The process has already overturned plausible early conclusions. Pretorius selective recall was a micro-harness winner but becomes a real-baseline redundancy because Frankenstein already scores 1.00 on the frozen target. Offscreen catch-up was an early promote but becomes a real-baseline HOLD under the cost gate. Contextual plasticity demonstrates a real missing capability but remains held by the complexity ceiling. These reversals are evidence that Bride is functioning as a discriminator rather than a donor-accumulation exercise.
+Integrated Longitudinal Gate 1 is frozen at candidate evidence SHA `d481153628cad95ca4348e5f6a799b0472c808cb`. Regression workflow `37427624732` passed 9/9 jobs and Bride qualification workflow `37427624706` passed 6/6 jobs. All six longitudinal artifacts normalize to the same nine-trial result.
 
-Stage-two held-out, restart, neutral-control, and adversarial tests are now part of the donor suite. Production-authority bridges for DUCK and the narrow Doctor-Lives commitment mechanism are green in run `37422748984`; the involuntary-expression bridge is green in run `37422850823`. Jelly remains the outstanding production bridge before the first integration branch is cut.
+Repeated-Interaction Stress is frozen at candidate evidence SHA `e66d7e9ffe9312f82a0d5a95b0ce7b0506f6c551`. Regression workflow `37428534048` passed 9/9 jobs and Bride qualification workflow `37428534259` passed 6/6 jobs. The six stress JSON artifacts normalize to SHA-256 `54534a007a118178ca7262c7c31ffae3c570856bf488456a2d3c0a984afa1271`, with trial-payload SHA-256 `65831d7d9b6bb4b381c81da24558eb5c86de42d631d75b8206ad9e20d3eef967`.
+
+Release hardening at `31f727afe6918e05b1deb508d09fd99cb042e36d` passed regression workflow `37516915821` and qualification workflow `37516915930`. This gate added explicit v0.1-to-v0.2 compatibility and backup/restore tests and introduced the portable `semantic_projection_digest()` while retaining the legacy `projection_digest()` contract.
+
+The qualification program has produced meaningful nulls. Pretorius selective recall and Digital Subject continuity influence remain redundant for their frozen targets. Offscreen catch-up remains held by cost. Contextual plasticity remains held by complexity despite a measured capability gain. Omnicore affect remains a research hold. Activation steering and PersonaForge selective dual process remain blocked pending compatible live-model reproduction.
 
 ## Known holds and rejected work
 
@@ -300,18 +311,20 @@ The same restraint applies to negative results. A null lesion does not prove a m
 
 ## Production roadmap
 
-The immediate next gate is BQ-008: connect the qualified Jelly concern state to ordinary action competition through Frankenstein's existing `DecisionEngine`. The laboratory shortcut that directly chooses reflection is not production-acceptable.
+The donor qualification and Bride-side v0.2 integration work is complete for this release candidate. The current task is release acceptance, not further donor accumulation.
 
-After the Jelly bridge is green, Bride will freeze the donor-qualification head and create a separate `candidate/v0.2-qualified-integrations` branch. Production changes then proceed one mechanism at a time: bounded planning, narrow confidentiality commitment pressure, bounded Jelly concern pressure, and the separate involuntary-expression channel. TinyPersona remains an adapter rather than a core organ.
+`release/v0.2-rc1` must pass the complete regression and Bride qualification matrices with the package version fixed at `0.2.0rc1`. The RC may then be merged into Bride `main` as the accepted laboratory and reference implementation for the qualified v0.2 architecture.
 
-Each integration keeps the old behavior reproducible as an ablation, runs the inherited Frankenstein suite and Bride qualification suite across Linux, Windows, and macOS, then reruns matched-history and held-out cases. The integrated candidate must subsequently face renderer-swap, ContextEcho-style long-session drift, Memora-style remembering/forgetting, and longer Bicentennial/Kurzweil counterfactual histories before v0.2 can be declared stronger as a whole.
+Promotion back to the original `Azimn/Frankenstein` production repository is a separate controlled step. It should carry the exact qualified core, the ablation paths, the release evidence, and the compatibility tests rather than reimplementing the mechanisms from prose.
 
-Only the integrated candidate that survives those gates should be proposed back to the original `Azimn/Frankenstein` repository. Bride remains the permanent laboratory, null-result archive, donor lineage, and source of the production justification.
+Future challengers must beat the current v0.2 champion, not the historical v0.1 baseline. Held or blocked mechanisms remain outside the core until new preregistered evidence changes their verdict.
 
-## Definition of done for the donor qualification phase
+## Definition of done for Frankenstein v0.2 RC1
 
-The phase is complete when the frozen baseline is reproducible, every donor has a recorded role and provenance, ChatGPT-only history is classified rather than silently mixed with repository evidence, every candidate has an explicit benchmark and verdict, local and cross-platform CI are green, promotion decisions are recorded permanently, and only measured winners are integrated into the Bride candidate trunk. A large architecture with many plausible organs is not success. A smaller architecture whose organs are demonstrably load-bearing is success.
+RC1 is acceptable only when all of the following are true: the four qualified mechanisms remain the only new production organs; all ablation paths remain executable; the 9-job regression matrix is green; the 6-job Bride qualification matrix is green; the 15-probe Frankenstein acceptance harness is green; integrated longitudinal and repeated-interaction stress evidence remain green; v0.1-shaped homes open without migration; legacy backup manifests restore; new backups verify semantic projection equivalence; package and runtime versions agree; documentation reflects the executed state; and no known release-blocking defect remains.
+
+A passing RC does not imply phenomenal consciousness, arbitrary live-model renderer invariance, or human equivalence. It establishes a bounded, causally audited, renderer-neutral persistent-character architecture under the tested contracts.
 
 ## Evidence appendices
 
-`docs/DONOR_REGISTRY.md` records donor references and allowed reuse. `docs/EXPERIMENT_PROTOCOL.md` defines the promotion method. `docs/RESEARCH_TIMELINE.md` preserves the complete lineage and negative results. `docs/PROMOTION_LEDGER.md` records current verdicts. `evidence/REAL_BASELINE_SNAPSHOT_868dd0b.md` freezes the first six-platform real-baseline consensus, while CI publishes machine-readable `qualification-results.json` artifacts for each matrix job.
+`docs/DONOR_REGISTRY.md` records donor references and allowed reuse. `docs/EXPERIMENT_PROTOCOL.md` defines the promotion method. `docs/RESEARCH_TIMELINE.md` preserves the complete lineage and negative results. `docs/PROMOTION_LEDGER.md` records donor verdicts. `docs/INTEGRATION_LEDGER.md` records each production integration and whole-system gate. `docs/RELEASE_CANDIDATE.md` records RC acceptance evidence. Frozen evidence snapshots preserve the original real-baseline, integrated longitudinal, and repeated-interaction stress consensus, while CI publishes machine-readable qualification, longitudinal, and stress JSON artifacts.

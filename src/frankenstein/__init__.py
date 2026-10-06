@@ -7,4 +7,4 @@ from .planning import PlanState
 from .expression import InvoluntaryExpression
 
 __all__ = ["FrankensteinEngine", "CharacterOrigin", "ActionCandidate", "DecisionReceipt", "PlanState", "InvoluntaryExpression"]
-__version__ = "0.2.0.dev0"
+__version__ = "0.2.0rc1"
