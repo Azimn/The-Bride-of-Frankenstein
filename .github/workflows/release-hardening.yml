@@ -51,3 +51,41 @@ jobs:
             evidence/v01-manifest.json
             evidence/v01-upgrade-result.json
           if-no-files-found: error
+
+
+  package-smoke:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ["3.11", "3.13"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: python -m pip install --upgrade pip build
+      - run: python -m build
+      - name: Install built wheel
+        run: >-
+          python -c "import glob,subprocess,sys;
+          wheels=glob.glob('dist/*.whl');
+          assert len(wheels)==1, wheels;
+          subprocess.check_call([sys.executable,'-m','pip','install','--force-reinstall',wheels[0]])"
+      - run: python -m pip check
+      - name: Verify installed distribution version
+        run: >-
+          python -c "import frankenstein;
+          import importlib.metadata as metadata;
+          assert frankenstein.__version__ == '0.2.0rc1';
+          assert metadata.version('frankenstein-character-runtime') == '0.2.0rc1';
+          print(frankenstein.__version__)"
+      - run: python -m frankenstein eval
+      - run: frankenstein --help
+      - run: bride-qualify list
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-package-${{ runner.os }}-py${{ matrix.python-version }}
+          path: dist/
+          if-no-files-found: error
