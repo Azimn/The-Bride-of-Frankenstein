@@ -44,9 +44,9 @@ The laboratory winner is not automatically a production winner. Production bridg
 - DUCK planning: qualified plan steps are translated into ordinary `ActionCandidate` objects and compete through the existing `DecisionEngine`. Stronger homeostatic pressure can beat the plan while the plan remains pending.
 - Doctor-Lives commitment pressure: commitments adjust candidate utility before the existing `DecisionEngine` runs. There is no second selector.
 - FirstPersonLoop involuntary expression: reflexive output is represented separately from the deliberate `DecisionReceipt`; it does not replace intentional action selection.
-- Jelly inner-ear: behavioral qualification is green, but its production concern-to-policy bridge must still be tested through the existing `DecisionEngine` before integration.
+- Jelly inner-ear: only admitted private concerns adjust ordinary candidate utility, and the existing `DecisionEngine` remains the sole deliberate selector. Ordinary concerns are an explicit ablation and do not receive Jelly-specific pressure.
 
-Cross-platform production-bridge evidence includes donor-qualification run `37422748984` for DUCK and Doctor-Lives at `d0201ec814de474271553d2cf85160800f97a0e1`, and run `37422850823` for the involuntary-expression bridge at `7112b3c43451382f71900d4788a3a544e7155218`. Both completed successfully.
+Cross-platform production-bridge evidence includes donor-qualification run `37422748984` for DUCK and Doctor-Lives at `d0201ec814de474271553d2cf85160800f97a0e1`, run `37422850823` for the involuntary-expression bridge at `7112b3c43451382f71900d4788a3a544e7155218`, and run `37424276411` for the hardened Jelly concern bridge at `5ce9df0e740cfbb8ffb1c1f8658cdefa61bfcd3a`. All completed successfully across the qualification matrix.
 
 ## Earlier micro-qualification, preserved as historical evidence
 
