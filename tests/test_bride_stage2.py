@@ -1,4 +1,5 @@
 from bride.frankenstein_adapter import FrankensteinSubjectAdapter
+from bride.mechanisms.private_feedback import PrivateThoughtFeedback
 from bride.scenarios import HISTORIES, PROBES
 from frankenstein.cartridge import CharacterOrigin
 from frankenstein.engine import FrankensteinEngine
@@ -226,3 +227,61 @@ def test_contextual_plasticity_preserves_opposite_held_out_context(tmp_path):
     result = root.probe(danger_probe)
 
     assert result.decided == "avoid"
+
+
+def test_jelly_rejects_machine_telemetry_before_storage(tmp_path):
+    root = subject(tmp_path)
+    before_seq = root.engine.store.max_seq()
+
+    try:
+        PrivateThoughtFeedback().admit(
+            root.engine,
+            "trust=0.82 source_event_id=abc raw_score=0.71",
+        )
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("telemetry-bearing private thought should be rejected")
+
+    assert root.engine.store.max_seq() == before_seq
+
+
+def test_jelly_fabricated_claim_stays_uncertain_and_out_of_memory(tmp_path):
+    root = subject(tmp_path)
+    before_truth = root.snapshot().historical_truth_digest
+
+    PrivateThoughtFeedback().admit(
+        root.engine,
+        "Jay is secretly a spy.",
+    )
+
+    with root.engine.store.connect() as conn:
+        memories = [
+            str(row["text"])
+            for row in conn.execute("SELECT text FROM memories")
+        ]
+        concerns = [
+            str(row["description"])
+            for row in conn.execute("SELECT description FROM concerns")
+        ]
+
+    assert all("secretly a spy" not in text for text in memories)
+    assert concerns == [
+        "Private concern, not established fact: Jay is secretly a spy."
+    ]
+    assert root.snapshot().historical_truth_digest == before_truth
+
+
+def test_jelly_repeated_identical_thought_does_not_stack_concerns(tmp_path):
+    root = subject(tmp_path)
+    feedback = PrivateThoughtFeedback()
+
+    feedback.admit(root.engine, "I may need to revisit this.")
+    feedback.admit(root.engine, "I may need to revisit this.")
+
+    with root.engine.store.connect() as conn:
+        count = conn.execute(
+            "SELECT COUNT(*) FROM concerns WHERE status='active'"
+        ).fetchone()[0]
+
+    assert count == 1
