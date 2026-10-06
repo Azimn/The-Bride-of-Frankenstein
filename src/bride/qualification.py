@@ -11,7 +11,7 @@ from .metrics import causal_effect, consistency, mean_quality, safe_ratio, speci
 class QualificationPolicy:
     minimum_consistency: float = 0.67
     minimum_specificity: float = 0.15
-    maximum_complexity_points: float = 3.0
+    maximum_complexity_points: float = 0.35
     require_identity_preservation: bool = True
     require_truth_preservation: bool = True
     require_authority_preservation: bool = True
