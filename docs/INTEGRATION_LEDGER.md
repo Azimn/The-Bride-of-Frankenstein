@@ -158,3 +158,27 @@ The v0.2 candidate core now contains exactly four behaviorally qualified additio
 TinyPersona perception remains an external adapter rather than core world authority. Donors held, rejected, blocked, or infrastructure-only in the Bride promotion ledger remain outside the production core.
 
 The next phase is integrated longitudinal qualification, not additional donor accumulation.
+
+
+## Integrated Longitudinal Gate 1
+
+Status: **GREEN**
+
+Candidate evidence SHA: `d481153628cad95ca4348e5f6a799b0472c808cb`
+
+Regression workflow: `37427624732`
+
+Bride qualification workflow: `37427624706`
+
+Frozen evidence: `evidence/INTEGRATED_LONGITUDINAL_SNAPSHOT_d481153.md`
+
+Evidence:
+- 9/9 regression jobs passed.
+- 6/6 qualification jobs passed.
+- Six machine-readable longitudinal artifacts decode to identical JSON.
+- Normalized full-result SHA-256: `d2541d20fcb2d4460d2372986e4f41441f0b07dc84a73315aa9ff5a96fc7758f`.
+- Nine integrated trials passed everywhere: planning persistence, confidentiality policy, private-cognition policy, involuntary expression, combined pressure competition, renderer-swap semantic invariance, diagnostic-fork isolation, remember-versus-intrude memory behavior, and developmental path divergence.
+
+Verdict: **ADVANCE TO LONGER STRESS QUALIFICATION**
+
+This gate is stronger than isolated feature tests because the qualified mechanisms coexist in the same candidate and compete through the same action authority. It is still deterministic and bounded. Live-model renderer invariance and much longer histories remain separate gates.
