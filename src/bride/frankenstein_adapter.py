@@ -23,6 +23,55 @@ def _digest(value) -> str:
     return hashlib.sha256(raw).hexdigest()
 
 
+def _semantic_projection_digest(store) -> str:
+    """Canonical semantic projection digest independent of SQLite row insertion order."""
+
+    tables = (
+        "needs",
+        "affect",
+        "relationships",
+        "beliefs",
+        "commitments",
+        "expectations",
+        "goals",
+        "concerns",
+        "habits",
+        "memory_edges",
+        "runtime_state",
+    )
+    snapshot: dict[str, list[dict]] = {}
+    with store.connect() as conn:
+        for table in tables:
+            rows = conn.execute(f"SELECT * FROM {table}").fetchall()
+            normalized = [{k: row[k] for k in row.keys()} for row in rows]
+            normalized.sort(
+                key=lambda item: json.dumps(
+                    item,
+                    sort_keys=True,
+                    separators=(",", ":"),
+                    default=str,
+                )
+            )
+            snapshot[table] = normalized
+
+        rows = conn.execute(
+            "SELECT memory_id,kind,actor_id,text,tags_json,salience,valence,"
+            "arousal,created_at,source_event_id FROM memories"
+        ).fetchall()
+        memories = [{k: row[k] for k in row.keys()} for row in rows]
+        memories.sort(
+            key=lambda item: json.dumps(
+                item,
+                sort_keys=True,
+                separators=(",", ":"),
+                default=str,
+            )
+        )
+        snapshot["memories"] = memories
+
+    return _digest(snapshot)
+
+
 class FrankensteinSubjectAdapter:
     """Experiment adapter around the frozen Frankenstein v0.1 public surface.
 
@@ -66,8 +115,9 @@ class FrankensteinSubjectAdapter:
         lab_files = {}
         for p in sorted(self.lab_dir.glob("*.json")):
             lab_files[p.name] = p.read_text(encoding="utf-8")
-        before_projection = self.engine.store.projection_digest()
-        after_projection = self.engine.rebuild()
+        before_projection = _semantic_projection_digest(self.engine.store)
+        self.engine.rebuild()
+        after_projection = _semantic_projection_digest(self.engine.store)
         integrity_ok = self.engine.store.verify_integrity().ok
         replay_ok = before_projection == after_projection and integrity_ok
         replay = {
