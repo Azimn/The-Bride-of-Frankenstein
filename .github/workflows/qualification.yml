@@ -30,8 +30,11 @@ jobs:
       - run: python -m frankenstein eval
       - run: bride-qualify list
       - run: bride-qualify suite --real-frankenstein --output evidence/qualification-results.json
+      - run: bride-qualify longitudinal --output evidence/longitudinal-results.json
       - uses: actions/upload-artifact@v4
         with:
           name: bride-qualification-${{ runner.os }}-py${{ matrix.python-version }}
-          path: evidence/qualification-results.json
+          path: |
+            evidence/qualification-results.json
+            evidence/longitudinal-results.json
           if-no-files-found: error
