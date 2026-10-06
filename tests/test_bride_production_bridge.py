@@ -111,7 +111,7 @@ def test_commitment_bridge_ignores_unrelated_commitments(tmp_path):
 
 def concern_candidates():
     return (
-        ActionCandidate("engage", base_utility=0.25),
+        ActionCandidate("engage", base_utility=0.40),
         ActionCandidate("reflect", base_utility=0.09, tags=("reflect",)),
         ActionCandidate(
             "rest",
