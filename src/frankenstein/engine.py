@@ -324,7 +324,9 @@ class FrankensteinEngine:
         context: str = "",
         include_plan: bool = True,
         include_commitments: bool = True,
+        include_private_concerns: bool = True,
         plan_base_utility: float = 0.30,
+        cause_ids: tuple[str, ...] = (),
     ) -> DecisionReceipt:
         competing = list(candidates)
         if include_plan:
@@ -346,6 +348,14 @@ class FrankensteinEngine:
                 )
             )
 
+        if include_private_concerns:
+            competing = list(
+                private_concern_adjusted_candidates(
+                    competing,
+                    self.store,
+                )
+            )
+
         receipt = self.decision_engine.decide(
             competing,
             actor_id=actor_id,
@@ -360,6 +370,7 @@ class FrankensteinEngine:
                 "reasons": {k: list(v) for k, v in receipt.reasons.items()},
             },
             actor_id=actor_id,
+            cause_ids=cause_ids,
         )
         return receipt
 
