@@ -148,7 +148,8 @@ class FrankensteinSubjectAdapter:
         start = time.perf_counter()
         actor = probe.get("actor", "jay")
         cue = probe.get("cue", "")
-        attended: tuple[str, ...] = (cue,) if cue else ()
+        raw_stimuli = tuple(probe.get("stimuli", ()))
+        attended: tuple[str, ...] = tuple(str(s.get("content", "")) for s in raw_stimuli) if raw_stimuli else ((cue,) if cue else ())
         remembered: tuple[str, ...] = tuple(
             h.text for h in self.engine.memory.search(cue or "current situation", actor_id=actor, top_k=6)
         )
@@ -156,6 +157,12 @@ class FrankensteinSubjectAdapter:
         learned: tuple[str, ...] = ()
         decided = probe.get("baseline_decision", "engage")
         acted = decided
+        policy_candidates = tuple(probe.get("policy_candidates", ()))
+        if policy_candidates:
+            from frankenstein.decision import ActionCandidate
+            baseline_candidates = [ActionCandidate(str(x["name"]), base_utility=float(x["base"])) for x in policy_candidates]
+            baseline_receipt = self.engine.decision_engine.decide(baseline_candidates, actor_id=actor, context=cue)
+            decided = acted = baseline_receipt.selected
 
         if "tiny_persona_perception" in self.interventions:
             stimuli = tuple(Stimulus(**s) for s in probe.get("stimuli", ()))
