@@ -51,6 +51,8 @@ class EventKind(str, Enum):
     AFFECT_UPDATE = "affect_update"
     EXPECTATION_CREATED = "expectation_created"
     EXPECTATION_UPDATED = "expectation_updated"
+    PLAN_CREATED = "plan_created"
+    PLAN_UPDATED = "plan_updated"
 
 
 @dataclass(frozen=True)
