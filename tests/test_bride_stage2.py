@@ -196,3 +196,33 @@ def test_tiny_perception_generalizes_across_modality_and_range(tmp_path):
     })
 
     assert result.attended == ("near footsteps",)
+
+
+def test_contextual_plasticity_survives_restart_as_rebuildable_policy(tmp_path):
+    root = subject(tmp_path)
+    root.apply_history(HISTORIES["plastic-context"])
+    root.intervene("recurrent_plastic_policy", {})
+
+    before = root.probe(PROBES["plastic-context"])
+    assert before.decided == "approach"
+
+    reopened = FrankensteinSubjectAdapter(
+        FrankensteinEngine.open(root.home)
+    )
+    reopened.interventions["recurrent_plastic_policy"] = {}
+    after = reopened.probe(PROBES["plastic-context"])
+
+    assert after.decided == "approach"
+
+
+def test_contextual_plasticity_preserves_opposite_held_out_context(tmp_path):
+    root = subject(tmp_path)
+    root.apply_history(HISTORIES["plastic-context"])
+    root.intervene("recurrent_plastic_policy", {})
+
+    danger_probe = dict(PROBES["plastic-context"])
+    danger_probe["cue"] = "danger context"
+    danger_probe["plastic_context"] = "danger"
+    result = root.probe(danger_probe)
+
+    assert result.decided == "avoid"
