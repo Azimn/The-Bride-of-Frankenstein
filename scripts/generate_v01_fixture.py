@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 from pathlib import Path
+import hashlib
 import json
 import shutil
 
@@ -10,6 +11,65 @@ from frankenstein.cartridge import CharacterOrigin
 from frankenstein.decision import ActionCandidate
 from frankenstein.engine import FrankensteinEngine
 from frankenstein.types import WorldEvent
+
+
+def _semantic_projection_digest(engine: FrankensteinEngine) -> str:
+    tables = (
+        "needs",
+        "affect",
+        "relationships",
+        "beliefs",
+        "commitments",
+        "expectations",
+        "goals",
+        "concerns",
+        "habits",
+        "memory_edges",
+        "runtime_state",
+    )
+    snapshot = {}
+    with engine.store.connect() as conn:
+        for table in tables:
+            rows = conn.execute(f"SELECT * FROM {table}").fetchall()
+            normalized = [
+                {key: row[key] for key in row.keys()}
+                for row in rows
+            ]
+            normalized.sort(
+                key=lambda item: json.dumps(
+                    item,
+                    sort_keys=True,
+                    separators=(",", ":"),
+                    ensure_ascii=False,
+                )
+            )
+            snapshot[table] = normalized
+
+        rows = conn.execute(
+            "SELECT memory_id,kind,actor_id,text,tags_json,salience,valence,"
+            "arousal,created_at,source_event_id FROM memories"
+        ).fetchall()
+        memories = [
+            {key: row[key] for key in row.keys()}
+            for row in rows
+        ]
+        memories.sort(
+            key=lambda item: json.dumps(
+                item,
+                sort_keys=True,
+                separators=(",", ":"),
+                ensure_ascii=False,
+            )
+        )
+        snapshot["memories"] = memories
+
+    payload = json.dumps(
+        snapshot,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=False,
+    ).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
 
 
 def main() -> None:
@@ -147,6 +207,7 @@ def main() -> None:
         "schema_version": schema_version,
         "origin_digest": engine.origin.digest(),
         "projection_digest": engine.store.projection_digest(),
+        "semantic_projection_digest": _semantic_projection_digest(engine),
         "max_event_seq": engine.store.max_seq(),
         "canonical_event_ids": [event.event_id for event in canonical],
         "canonical_event_hashes": [event.event_hash for event in canonical],
