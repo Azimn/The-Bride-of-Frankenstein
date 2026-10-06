@@ -13,6 +13,7 @@ from .mechanisms.involuntary import InvoluntaryExpressionGate
 from .mechanisms.offscreen import OffscreenCatchupClock
 from .mechanisms.perception import BoundedPerception, Stimulus
 from .mechanisms.planning import EndogenousPlanner
+from .mechanisms.plastic_policy import ContextualPlasticPolicy
 from .mechanisms.policy_bridge import CommitmentPolicyBridge, PolicyCandidate
 from .mechanisms.private_feedback import PrivateThoughtFeedback
 from .mechanisms.social_recall import ActorIndexedRecall, RecallItem
@@ -181,6 +182,21 @@ class FrankensteinSubjectAdapter:
                     json.dumps({"event_id": e.event_id, "minutes": float(event.get("minutes", 0.0))}),
                     encoding="utf-8",
                 )
+            elif kind == "training_trial":
+                context = str(event.get("context", "default"))
+                action = str(event.get("action", "act"))
+                reward = float(event.get("reward", 0.0))
+                context_event = self.engine.observe(WorldEvent(
+                    event.get("summary", f"Training trial in {context}: {action}."),
+                    tags=("training_context", context),
+                    metadata={"context": context, "action": action},
+                ))
+                self.engine.record_outcome(
+                    action,
+                    reward=reward,
+                    summary=f"{action} in {context} produced reward {reward:+.1f}.",
+                    cause_ids=(context_event.event_id,),
+                )
             elif kind == "failed_route":
                 self.engine.observe(WorldEvent(
                     event.get("summary", "The attempted route failed."),
@@ -225,6 +241,30 @@ class FrankensteinSubjectAdapter:
                     )
                     if planner.form_goal(objective, routes):
                         planner.report_outcome(False)
+        elif mechanism_id == "recurrent_plastic_policy":
+            policy = ContextualPlasticPolicy()
+            events = {
+                event.event_id: event
+                for event in self.engine.store.iter_events(canonical_only=True)
+            }
+            for event in events.values():
+                if event.kind != "action_outcome":
+                    continue
+                context = None
+                for cause_id in event.cause_ids:
+                    cause = events.get(cause_id)
+                    if cause and cause.kind == "world_event":
+                        metadata = dict(cause.payload.get("metadata", {}))
+                        if "context" in metadata:
+                            context = str(metadata["context"])
+                            break
+                if context is None:
+                    continue
+                action = str(event.payload.get("action_name", ""))
+                if not action:
+                    continue
+                policy.learn(context, action, float(event.payload.get("reward", 0.0)))
+            policy.save(self.lab_dir / "plastic-policy.json")
         elif mechanism_id in {
             "tiny_persona_perception",
             "pretorius_v6_recall_social",
@@ -233,7 +273,6 @@ class FrankensteinSubjectAdapter:
             "bounded_offscreen_catchup",
             "first_person_involuntary_expression",
             "omnicore_six_dimensional_affect",
-            "recurrent_plastic_policy",
             "madman_resource_metabolism",
         }:
             pass
@@ -418,9 +457,18 @@ class FrankensteinSubjectAdapter:
             if state.caution_pressure() > 0.2:
                 predicted = ("novelty-sensitive caution",)
 
-        if "recurrent_plastic_policy" in self.interventions and probe.get("repeated_failure", False):
-            learned = ("history-sensitive latent tendency",)
-            decided = acted = "avoid_failed_pattern"
+        if "recurrent_plastic_policy" in self.interventions:
+            context = str(probe.get("plastic_context", ""))
+            actions = tuple(
+                str(item["name"])
+                for item in probe.get("decision_candidates", ())
+            )
+            if context and actions:
+                policy = ContextualPlasticPolicy.load(
+                    self.lab_dir / "plastic-policy.json"
+                )
+                decided = acted = policy.choose(context, actions)
+                learned = ("context-conditioned action values",)
 
         if "madman_resource_metabolism" in self.interventions and probe.get("scarcity", False):
             attended = ("resource scarcity",)
