@@ -81,7 +81,7 @@ class DeterministicLabSubject:
             actor_memories = [m for m in memories if m.get("actor") == actor]
             if actor_memories:
                 remembered = [str(actor_memories[0].get("text", ""))]
-        if "doctor_lives_state_policy_bridge" in intervention_ids and self.internal.get("confidential_commitment"):
+        if "doctor_lives_commitment_policy_bridge" in intervention_ids and self.internal.get("confidential_commitment"):
             decided = acted = "decline"
         if "digital_subject_continuity_influence" in intervention_ids and self.internal.get(f"trust:{actor}", 0) < 0:
             predicted = ["promise may be violated"]
