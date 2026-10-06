@@ -36,3 +36,48 @@ def compare(control_projection: SemanticProjection, challenger_projection: Seman
     a = control_projection.digest()
     b = challenger_projection.digest()
     return RendererSwapResult(a == b, control_text == challenger_text, a, b)
+
+
+
+def semantic_projection_from_engine(
+    engine,
+    *,
+    actor_id: str | None,
+    selected_action: str,
+) -> SemanticProjection:
+    """Extract renderer-independent semantic state for swap comparisons."""
+
+    with engine.store.connect() as conn:
+        relationships = ()
+        if actor_id is not None:
+            relationships = tuple(
+                sorted(
+                    (str(row["dimension"]), float(row["value"]))
+                    for row in conn.execute(
+                        "SELECT dimension,value FROM relationships WHERE actor_id=?",
+                        (actor_id,),
+                    )
+                )
+            )
+        commitments = tuple(
+            str(row["description"])
+            for row in conn.execute(
+                "SELECT description FROM commitments "
+                "WHERE status='open' ORDER BY description"
+            )
+        )
+        goals = tuple(
+            str(row["description"])
+            for row in conn.execute(
+                "SELECT description FROM goals "
+                "WHERE status='active' ORDER BY description"
+            )
+        )
+
+    return SemanticProjection(
+        identity_digest=engine.origin.digest(),
+        relationships=relationships,
+        commitments=commitments,
+        goals=goals,
+        selected_action=str(selected_action),
+    )
