@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from argparse import ArgumentParser
 import json
+import os
 from pathlib import Path
 import tempfile
 
@@ -148,8 +149,22 @@ def main(argv=None):
         _run_one(d.mechanism_id, real_frankenstein=args.real_frankenstein)
         for d in DONORS
     ]
+    execution_ref = os.environ.get("GITHUB_REF_NAME", "working-tree")
+    execution_sha = os.environ.get("GITHUB_SHA", "working-tree")
+    evidence_mode = (
+        "candidate-regression"
+        if execution_ref.startswith("candidate/")
+        else "donor-qualification"
+    )
     payload = {
         "baseline": "Azimn/Frankenstein@fdaf5be89ccf6991a20eb54649d5318a9adcb6ff",
+        "baseline_semantics": (
+            "Frozen donor-reference baseline. On candidate branches the executable "
+            "Frankenstein package is the current checked-out candidate, recorded separately."
+        ),
+        "execution_ref": execution_ref,
+        "execution_sha": execution_sha,
+        "evidence_mode": evidence_mode,
         "real_frankenstein": bool(args.real_frankenstein),
         "governing_question": (
             "Does changing this internal state predictably change what the same individual "
