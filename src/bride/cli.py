@@ -122,6 +122,10 @@ def main(argv=None):
     longitudinal = sub.add_parser("longitudinal")
     longitudinal.add_argument("--output")
 
+    stress = sub.add_parser("stress")
+    stress.add_argument("--turns", type=int, default=32)
+    stress.add_argument("--output")
+
     args = parser.parse_args(argv)
 
     if args.cmd == "list":
@@ -156,6 +160,31 @@ def main(argv=None):
             "execution_ref": os.environ.get("GITHUB_REF_NAME", "working-tree"),
             "execution_sha": os.environ.get("GITHUB_SHA", "working-tree"),
             "evidence_mode": "integrated-longitudinal-candidate",
+            "governing_question": (
+                "Does changing this internal state predictably change what the same individual "
+                "attends to, remembers, predicts, learns, decides, or does later, while preserving "
+                "historical truth and architectural authority?"
+            ),
+            **report.to_dict(),
+        }
+        rendered = json.dumps(payload, indent=2) + "\n"
+        if args.output:
+            target = Path(args.output)
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text(rendered, encoding="utf-8")
+        print(rendered, end="")
+        if not report.passed:
+            raise SystemExit(1)
+        return
+
+    if args.cmd == "stress":
+        from .stress import run_stress_qualification
+
+        report = run_stress_qualification(turns=args.turns)
+        payload = {
+            "execution_ref": os.environ.get("GITHUB_REF_NAME", "working-tree"),
+            "execution_sha": os.environ.get("GITHUB_SHA", "working-tree"),
+            "evidence_mode": "integrated-stress-candidate",
             "governing_question": (
                 "Does changing this internal state predictably change what the same individual "
                 "attends to, remembers, predicts, learns, decides, or does later, while preserving "
