@@ -1,6 +1,6 @@
 # Frankenstein v0.2.0rc1 Release Candidate
 
-Status: **ACCEPTED RC1, PENDING MERGE TO MAIN**
+Status: **ACCEPTED RC1, MERGED TO BRIDE MAIN, POST-MERGE CI GREEN**
 
 Release branch: `release/v0.2-rc1`
 
@@ -58,4 +58,24 @@ Acceptance evidence:
 
 Verdict: **ACCEPT RC1 FOR MERGE TO BRIDE MAIN**
 
-After merge, `main` must independently pass both workflows before this update is considered complete.
+## Bride main promotion and independent verification
+
+The accepted RC head `9ad66a5943518cece4ebb27e207871fce8e4fbfa` is preserved as the direct parent of Bride main promotion commit `37279552cb3c1468e07954f67944b34f67487d96`.
+
+Fresh workflows then ran independently on `main` at that exact post-merge head:
+
+Regression workflow: `37678134886`, **SUCCESS**
+
+Bride qualification workflow: `37678134889`, **SUCCESS**
+
+Post-merge evidence:
+- 9/9 regression jobs passed on `main` across Linux, Windows, and macOS on Python 3.11, 3.12, and 3.13.
+- 6/6 Bride qualification jobs passed on `main` across Linux, Windows, and macOS on Python 3.11 and 3.13.
+- every qualification job passed `pytest -q` and `python -m frankenstein eval`,
+- every qualification job passed the real-Frankenstein donor suite,
+- every qualification job passed all nine integrated longitudinal trials,
+- every qualification job passed all eight 32-turn repeated-interaction stress trials.
+
+Final Bride verdict: **FRANKENSTEIN v0.2.0rc1 ACCEPTED ON BRIDE MAIN**
+
+This closes the Bride-side RC1 release gate. Promotion to the separate `Azimn/Frankenstein` production repository remains a distinct controlled operation.
